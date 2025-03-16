@@ -1,8 +1,15 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿<h1>Добро пожаловать!</h1>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>Привет, @User.Identity.Name!</p>
+    <p><a asp-controller="Trips" asp-action="Create">Создать путешествие</a></p>
+    <p><a asp-controller="Trips" asp-action="Index">Найти путешествие</a></p>
+    <form asp-controller="Account" asp-action="Logout" method="post">
+        <button type="submit">Выйти</button>
+    </form>
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+else
+{
+    <p><a asp-controller="Account" asp-action="Register">Регистрация</a></p>
+    <p><a asp-controller="Account" asp-action="Login">Вход</a></p>
+}

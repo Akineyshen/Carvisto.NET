@@ -1,0 +1,17 @@
+@model List<Carvisto.Models.Trip>
+<h2>Доступные путешествия</h2>
+@if (Model.Any())
+{
+    <ul>
+        @foreach (var trip in Model)
+        {
+            <li>
+                @trip.From - @trip.To | @trip.DepartureDate.ToShortDateString() | Цена: @trip.Price
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Нет доступных путешествий.</p>
+}
