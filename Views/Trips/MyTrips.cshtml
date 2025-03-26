@@ -1,0 +1,44 @@
+@model IEnumerable<Carvisto.Models.Trip>
+@{
+    ViewData["Title"] = "My Trips";
+}
+<h2>My Trips</h2>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<p><a asp-action="Create" class="btn btn-primary">Create New Trip</a></p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Start</th>
+        <th>End</th>
+        <th>Date</th>
+        <th>Price</th>
+        <th>Vehicle</th>
+        <th>Comments</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var trip in Model)
+    {
+        <tr>
+            <td>@trip.StartLocation</td>
+            <td>@trip.EndLocation</td>
+            <td>@trip.DepartureDateTime.ToString("yyyy-MM-dd")</td>
+            <td>@trip.Price</td>
+            <td>@trip.VehicleBrand</td>
+            <td>@trip.Comments</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@trip.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@trip.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

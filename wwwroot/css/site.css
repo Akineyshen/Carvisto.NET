@@ -1,0 +1,75 @@
+body {
+  background-color: #f8f9fa;
+}
+
+.hero-section {
+  background-color: #007bff;
+  color: white;
+  padding: 50px 0;
+}
+
+.hero-section h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.search-panel {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-panel .form-control {
+  border-radius: 5px;
+}
+
+.search-panel .btn {
+  background-color: #0056b3;
+  border: none;
+}
+
+.search-panel .btn:hover {
+  background-color: #003d82;
+}
+
+.car-image {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.trip-card {
+  background-color: white;
+  border: 2px solid #007bff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 250px; /* Kwadratowa karta */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.trip-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.trip-info {
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #333;
+}
+
+.trip-card .btn {
+  background-color: #007bff;
+  border: none;
+  margin-top: auto;
+}
+
+.trip-card .btn:hover {
+  background-color: #0056b3;
+}
