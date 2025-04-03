@@ -12,23 +12,23 @@
                 <div class="search-panel">
                     <form asp-action="Search" method="get" target="_blank">
                         <div class="mb-3">
-                            <label asp-for="SearchModel.StartLocation" class="form-label">From</label>
-                            <input asp-for="SearchModel.StartLocation" class="form-control" placeholder="e.g. Bialystok" />
+                            <label for="StartLocation" class="form-label text-dark">From</label>
+                            <input type="text" name="StartLocation" id="StartLocation" class="form-control" placeholder="e.g. Bialystok" />
                         </div>
                         <div class="mb-3">
-                            <label asp-for="SearchModel.EndLocation" class="form-label">To</label>
-                            <input asp-for="SearchModel.EndLocation" class="form-control" placeholder="e.g. Warszawa" />
+                            <label for="EndLocation" class="form-label text-dark">To</label>
+                            <input type="text" name="EndLocation" id="EndLocation" class="form-control" placeholder="e.g. Warszawa" />
                         </div>
                         <div class="mb-3">
-                            <label asp-for="SearchModel.DepartureDate" class="form-label">Date</label>
-                            <input asp-for="SearchModel.DepartureDate" class="form-control" type="date" />
+                            <label for="DepartureDate" class="form-label text-dark">Date</label>
+                            <input type="date" name="DepartureDate" id="DepartureDate" class="form-control" />
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Search</button>
                     </form>
                 </div>
             </div>
             <div class="col-md-6 text-center">
-                <img src="~/images/car.png" alt="Car" class="car-image" />
+                <img src="~/images/car1.png" alt="Car" class="car-image" />
             </div>
         </div>
     </div>

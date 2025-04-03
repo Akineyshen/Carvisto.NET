@@ -152,7 +152,7 @@ namespace TravelPlatform.Controllers
                 {
                     Console.WriteLine($"Validation error: {error.ErrorMessage}");
                 }
-                return View(originalTrip);
+                return View(trip);
             }
 
             try
@@ -172,7 +172,7 @@ namespace TravelPlatform.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"Error saving trip: {ex.Message}");
-                return View(originalTrip);
+                return View(trip);
             }
 
             return RedirectToAction(nameof(MyTrips));

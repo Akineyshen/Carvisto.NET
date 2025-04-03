@@ -5,6 +5,7 @@
 <h2>Edit Trip</h2>
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="DriverId" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div>
         <label asp-for="StartLocation"></label>
