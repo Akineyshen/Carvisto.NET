@@ -13,7 +13,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\images\" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\base\reset.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\base\typography.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\base\variables.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\layout\footer.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\layout\grid.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\layout\header.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\layout\hero.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\utilities\animations.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\utilities\variables.css" />
     </ItemGroup>
 
 </Project>
