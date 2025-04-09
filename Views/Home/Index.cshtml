@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+<script src="/js/site.js"></script>
 <div class="hero-container">
     <img src="images/background.jpg" alt="Carvisto" class="hero-image">
     <div class="overlay">
@@ -9,7 +10,7 @@
         <div class="search-panel">
                 <form asp-action="Search" method="get" class="search-fields">
                     <div class="search-field">
-                        <input type="text" id="startLocation" name="StartLocation" placeholder="City Departure"/>
+                        <input type="text" id="StartLocation" name="StartLocation" placeholder="City Departure"/>
                     </div>
                     <button type="button" class="swap-btn" aria-label="Swap locations">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
@@ -82,31 +83,3 @@
         }
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const swapBtn = document.querySelector('.swap-btn');
-
-        swapBtn.addEventListener('click', function() {
-            const startLocation = document.querySelector('input[name="StartLocation"]');
-            const endLocation = document.querySelector('input[name="EndLocation"]');
-
-            // Проверка на существование элементов
-            if (!startLocation || !endLocation) {
-                console.error('Не найдены поля ввода');
-                return;
-            }
-
-            // Меняем значения местами
-            const temp = startLocation.value;
-            startLocation.value = endLocation.value;
-            endLocation.value = temp;
-
-            // Добавим анимацию для визуального подтверждения
-            this.style.transform = 'rotate(180deg)';
-            setTimeout(() => {
-                this.style.transform = 'rotate(0)';
-            }, 300);
-        });
-    });
-</script>
