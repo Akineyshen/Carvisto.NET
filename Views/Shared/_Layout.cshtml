@@ -4,18 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Carvisto</title>
-    <link rel="icon" href="images/CarvistoLogo.png" type="image/x-icon" />
+    <link rel="icon" href="images/LogoGreen.png" type="image/x-icon" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/header.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/SearchPanel.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/settings.css" asp-append-version="true" />
 </head>
 <body>
 <header>
     <div class="header-container">
         <a class="header-logo" asp-controller="Home" asp-action="Index">
-            <img src="/images/CarvistoLogo.png" class="logo-icon">
+            <img src="/images/LogoGreen.png" class="logo-icon">
             Carvisto
         </a>
         
@@ -23,7 +19,7 @@
             <ul class="nav-menu">
                 <li><a href="/Trips/">Trips</a></li>
                 <li><a href="#">Drivers</a></li>
-                <li><a href="#">Rules</a></li>
+                <li><a href="/Faq/">FAQ</a></li>
                 <li><a href="#">Support</a></li>
             </ul>
         </nav>
@@ -32,7 +28,7 @@
             <a class="create-trip-btn" href="/Trips/Create/">Create Trip</a>
             @if (User.Identity.IsAuthenticated)
             {
-                <a class="login-btn" asp-controller="Account" asp-action="Settings">My Account</a>
+                <a class="login-btn" asp-controller="Account" asp-action="Index">My Account</a>
             }
             else
             {
@@ -52,18 +48,3 @@
 
 </body>
 </html>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const header = document.querySelector('header');
-        const headerHeight = header.offsetHeight;
-
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > headerHeight) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-    });
-</script>
