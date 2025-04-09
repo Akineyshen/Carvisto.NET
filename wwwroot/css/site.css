@@ -1,75 +1,118 @@
+/* improt */
+@import "header.css";
+@import "loginReg.css";
+@import "myAccount.css";
+@import "SearchPanel.css";
+@import "cardTrips.css";
+@import "createTrips.css";
+
+/* Color */
+:root {
+  --primary-color: #006AFF;
+  --primary-hover: #0056B3;
+  --secondary-color: #0DC255;
+  --secondary-hover: #0A8F3F;
+  --text-dark: #555;
+  --text-light: #ffffff;
+  --light-gray: #f8f9fa;
+  --border-color: #e0e0e0;
+  --error-color: #ef233c;
+  --error-hover: #b30000;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Общие стили */
 body {
-  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif; !important;
+  background: #f5f7fa;
+  color: #e0e0e0;
+  overflow-x: hidden;
 }
 
-.hero-section {
-  background-color: #007bff;
-  color: white;
-  padding: 50px 0;
+a {
+  text-decoration: none;
 }
 
-.hero-section h1 {
-  font-size: 2.5rem;
-  font-weight: bold;
+/* Главная секция */
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.search-panel {
-  background-color: rgba(255, 255, 255, 0.9);
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #00d4ff;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.search-box {
+  background: rgba(255, 255, 255, 0.1);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  animation: slideUp 1s ease-in-out;
 }
 
-.search-panel .form-control {
-  border-radius: 5px;
-}
-
-.search-panel .btn {
-  background-color: #0056b3;
+.search-box input {
+  padding: 10px;
   border: none;
+  border-radius: 5px;
+  margin: 10px 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #e0e0e0;
+  outline: none;
 }
 
-.search-panel .btn:hover {
-  background-color: #003d82;
+.search-box button {
+  padding: 10px 20px;
+  border: none;
+  background: #00d4ff;
+  color: #1a1a2e;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-.car-image {
-  max-width: 100%;
-  border-radius: 10px;
+.search-box button:hover {
+  transform: scale(1.05);
 }
 
-.trip-card {
-  background-color: white;
-  border: 2px solid #007bff;
-  border-radius: 10px;
+/* Футер */
+footer {
+  background: rgba(0, 0, 0, 0.7);
   padding: 20px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 250px; /* Kwadratowa karta */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }
 
-.trip-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #007bff;
-  margin-bottom: 10px;
+/* Анимации */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.trip-info {
-  font-size: 1rem;
-  margin: 5px 0;
-  color: #333;
-}
-
-.trip-card .btn {
-  background-color: #007bff;
-  border: none;
-  margin-top: auto;
-}
-
-.trip-card .btn:hover {
-  background-color: #0056b3;
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }

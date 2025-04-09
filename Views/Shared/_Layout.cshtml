@@ -3,73 +3,48 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TravelPlatform</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>Carvisto</title>
+    <link rel="icon" href="images/LogoGreen.png" type="image/x-icon" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index">TravelPlatform</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Trips" asp-action="Index">All Trips</a>
-                    </li>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Trips" asp-action="MyTrips">My Trips</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="Settings">Settings</a>
-                        </li>
-                    }
-                </ul>
-                <ul class="navbar-nav">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item">
-                            <form asp-controller="Account" asp-action="Logout" method="post">
-                                <button type="submit" class="nav-link btn btn-link text-white">Logout</button>
-                            </form>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="Register">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
-                        </li>
-                    }
-                </ul>
-            </div>
+    <div class="header-container">
+        <a class="header-logo" asp-controller="Home" asp-action="Index">
+            <img src="/images/LogoGreen.png" class="logo-icon">
+            Carvisto
+        </a>
+        
+        <nav class="header-nav">
+            <ul class="nav-menu">
+                <li><a href="/Trips/">Trips</a></li>
+                <li><a href="#">Drivers</a></li>
+                <li><a href="/Faq/">FAQ</a></li>
+                <li><a href="#">Support</a></li>
+            </ul>
+        </nav>
+        
+        <div class="header-actions">
+            <a class="create-trip-btn" href="/Trips/Create/">Create Trip</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a class="login-btn" asp-controller="Account" asp-action="Index">My Account</a>
+            }
+            else
+            {
+                <a class="login-btn" asp-controller="Account" asp-action="Login">Login</a>
+            }
         </div>
-    </nav>
+    </div>
 </header>
 
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
+<main>
+    @RenderBody()
+</main>
 
-<footer class="bg-primary text-white text-center py-3">
-    <p>&copy; 2025 - TravelPlatform</p>
+<footer>
+    <p>&copy; 2025 - Carvisto</p>
 </footer>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

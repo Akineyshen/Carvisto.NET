@@ -1,0 +1,206 @@
+@import "site.css";
+
+.search-trip {
+    max-width: 1000px;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+    margin-bottom: 40px;
+}
+
+/* Контейнер страницы */
+.trips-page {
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 30px 20px;
+}
+
+/* Заголовок страницы */
+.trips-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.trips-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.create-trip-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.create-trip-button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Сетка поездок */
+.trip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+/* Карточка поездки */
+.trip-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trip-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Шапка карточки */
+.trip-card-header {
+    margin-bottom: 15px;
+}
+
+.trip-route {
+    font-weight: 600;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 25px;
+    background-color: var(--primary-color);
+    padding: 16px;
+    border-radius: 20px;
+    color: var(--text-light);
+}
+
+.trip-comments {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #666;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* Детали поездки */
+.trip-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.trip-info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    color: #555;
+}
+
+.trip-info-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Цена и кнопка */
+.trip-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.price-amount {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.price-per-seat {
+    font-size: 12px;
+    color: var(--text-dark);
+}
+
+.view-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: none;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.view-button:hover {
+    background-color: var(--secondary-hover);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .trips-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .create-trip-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .trip-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Keeping additional styles that weren't replaced */
+.new-trips-section {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.trips-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.services-title {
+    text-align: left;
+    font-size: 1.8rem;
+    color: #555;
+    margin-bottom: 40px;
+    font-weight: 600;
+}
+
+.trip-route svg {
+    width: 16px;
+    height: 16px;
+}
+
+.trip-date {
+    font-size: 0.8rem;
+    background: rgba(255, 0, 0, 0.2);
+    padding: 4px 8px;
+    border-radius: 12px;
+}
