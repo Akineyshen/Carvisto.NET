@@ -1,8 +1,35 @@
+/* improt */
+@import "header.css";
+@import "loginReg.css";
+@import "myAccount.css";
+@import "SearchPanel.css";
+@import "cardTrips.css";
+@import "createTrips.css";
+
+/* Color */
+:root {
+  --primary-color: #006AFF;
+  --primary-hover: #0056B3;
+  --secondary-color: #0DC255;
+  --secondary-hover: #0A8F3F;
+  --text-dark: #555;
+  --text-light: #ffffff;
+  --light-gray: #f8f9fa;
+  --border-color: #e0e0e0;
+  --error-color: #ef233c;
+  --error-hover: #b30000;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
 /* Общие стили */
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', sans-serif; !important;
   background: #f5f7fa;
   color: #e0e0e0;
   overflow-x: hidden;
