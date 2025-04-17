@@ -1,83 +1,64 @@
-# 🚗 Platforma Wspólnych Podróży
+# Carvisto – Carpooling Platform
+![Language](https://img.shields.io/badge/Language-C%23-brightgreen?style=for-the-badge&logo=sharp&logoColor=813787&color=813787&labelColor=FCFCFC)
+![Framework](https://img.shields.io/badge/Framework-.NET-brightgreen?style=for-the-badge&logo=dotnet&logoColor=813787&color=813787&labelColor=FCFCFC)
+![Size](https://img.shields.io/github/repo-size/Akineyshen/TetrisJavaFX?label=Size&style=for-the-badge&color=813787&labelColor=FCFCFC)
+![Last Commit](https://img.shields.io/github/last-commit/Akineyshen/TetrisJavaFX?label=Last%20Commit&style=for-the-badge&color=813787&labelColor=FCFCFC)
 
-&#x20; &#x20;
+## Features
+### Core Functionality
+- **User Authentication**: User registration, login, and profile management.
+- **Trip Creation**: Drivers can publish trips by specifying route, date, and price.
+- **Trip Search**: Passengers can search for available trips by route, date, and cost.
+- **Reviews and Comments**: Users can leave reviews and comments after a completed trip.
 
-## 📌 Opis projektu
+### Advanced Features
+- **PDF Documents**: Automatic generation of trip agreements in PDF format.
+- **User Ratings**: Rating system based on user feedback.
+- **Interactive Map**: Visual representation of trip routes using Google Maps API.
+- **Admin Panel**: Manage users, trips, and reviews through an administrative interface.
 
-**Platforma Wspólnych Podróży** to innowacyjna strona internetowa, która umożliwia wyszukiwanie współpasażerów i organizowanie wspólnych przejazdów. Użytkownicy mogą znajdować kierowców lub pasażerów, uzgadniać szczegóły podróży oraz zawierać cyfrowe umowy, co zapewnia bezpieczeństwo i wygodę.
+## Requirements
+- .NET 6.0 or later
+- SQLITE
 
-## 🚀 Funkcjonalność
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Akineyshen/Carvisto.NET.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+    cd Carvisto.NET
+    ```
+3. Apply database migrations
+    ```bash
+    dotnet ef database update
+    ```
+4. Run the application:
+   ```bash
+   dotnet run
+   ```
 
-### 🔹 1. Rejestracja i autoryzacja
-
-- Rejestracja użytkowników
-- Logowanie
-- Przechowywanie danych użytkowników w bazie danych
-
-### 🔹 2. Tworzenie podróży (kierowca)
-
-- Wprowadzanie danych pojazdu (marka, model)
-- Podawanie danych kontaktowych (imię, telefon)
-- Określenie ceny za podróż
-- Wprowadzenie trasy (skąd – dokąd) oraz daty wyjazdu
-- Zapis informacji w bazie danych
-
-### 🔹 3. Wyszukiwanie podróży (pasażer)
-
-- Podanie informacji o pasażerze (imię, telefon)
-- Filtrowanie dostępnych podróży według trasy, daty i ceny
-- Wybór odpowiedniej opcji i wysyłanie zapytania do kierowcy
-
-### 🔹 4. Umowa podróży
-
-- Automatyczne generowanie umowy między kierowcą a pasażerem
-- Tworzenie umowy w formacie PDF z danymi uczestników i szczegółami podróży
-- Przechowywanie umowy w bazie danych oraz możliwość jej pobrania
-
-### 🔹 5. Baza danych
-
-- Przechowywanie informacji o użytkownikach, podróżach i umowach
-- Powiązanie tabel w celu zapewnienia wygodnego wyszukiwania i zarządzania podróżami
-
-### 🔹 6. Dodatkowe funkcje
-
-- Oceny użytkowników
-- Opinie i komentarze
-
-## 🎯 Cel projektu
-
-Naszym celem jest stworzenie bezpiecznej i wygodnej platformy do organizowania wspólnych podróży. Ułatwiamy wyszukiwanie współpasażerów oraz prawne uregulowanie przejazdów, zwiększając komfort i bezpieczeństwo podróżujących.
-
-## 🛠 Technologie
-
-- **Backend:** C# (.NET Core / .NET 6+)
-- **Frontend:** JavaScript
-- **Baza danych:** SQLite
-- **Architektura:** MVC
-
-## 📚 Wykorzystane biblioteki
-
-- **ASP.NET Core** – framework do budowy aplikacji webowych
-- **Entity Framework Core** – ORM do obsługi bazy danych
-- **ClaimIdentity** – zarządzanie użytkownikami i autoryzacją
-
-## 🛠 Instrukcja instalacji i konfiguracji
-
-### 1️⃣ Klonowanie repozytorium
-
-```sh
- git clone https://github.com/user/repo.git
- cd repo
+## Project Structure
+```bash
+Carvisto/
+    Carvisto/
+    ├── Dependencies/                # Project dependencies
+    ├── Properties/                  # Project configuration (launchSettings.json)
+    ├── wwwroot/                     # Static files (CSS, JS, images)
+    ├── Controllers/                 # MVC controllers handling HTTP requests
+    ├── Data/                        # Database context and seed data
+    ├── Migrations/                  # Entity Framework database migrations
+    ├── Models/                      # Data models representing application entities
+    ├── Views/                       # Razor views (UI templates)
+    ├── .gitignore                   # Git ignore rules
+    ├── appsettings.json             # Application configuration
+    ├── appsettings.Development.json # Development-specific settings
+    ├── Carvisto.db                  # SQLite database file
+    ├── Program.cs                   # Main entry point of the application
+    └── ReadMe.md                    # Project documentation
 ```
 
-### 2️⃣ Migracje bazy danych
+## Screenshots
 
-```sh
- dotnet ef database update
-```
-
-### 3️⃣ Uruchomienie projektu
-
-```sh
- dotnet run
-```
+to be added later
