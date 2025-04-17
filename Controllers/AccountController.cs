@@ -50,7 +50,7 @@ namespace Carvisto.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, "User");
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Account"); // Przekieruj do ustawień po rejestracji
+                    return RedirectToAction("Index"); // Przekieruj do ustawień po rejestracji
                 }
                 foreach (var error in result.Errors)
                 {

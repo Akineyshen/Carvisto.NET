@@ -40,7 +40,7 @@ namespace TravelPlatform.Controllers
             if (user.ContactName == "Unknown" || user.ContactPhone == "Unknown")
             {
                 TempData["ErrorMessage"] = "Please update your contact information in settings before creating a trip.";
-                return RedirectToAction("Settings", "Account");
+                return RedirectToAction("Index", "Account");
             }
             return View();
         }
