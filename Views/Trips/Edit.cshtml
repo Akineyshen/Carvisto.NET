@@ -29,9 +29,7 @@
     </div>
     <div>
         <label asp-for="VehicleBrand"></label>
-        <select asp-for="VehicleBrand" class="form-control" asp-items="@(new SelectList(Carvisto.Models.VehicleBrands.Brands))">
-            <option value="">Select a brand</option>
-        </select>
+        <input asp-for="VehicleBrand" class="form-control" placeholder="Enter vehicle brand">
         <span asp-validation-for="VehicleBrand" class="text-danger"></span>
     </div>
     <div>
