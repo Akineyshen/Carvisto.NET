@@ -4,7 +4,7 @@ namespace Carvisto.Models
 {
     public class AccountViewModel
     {
-        public UserSettingsViewModel UserSettings { get; set; } = new UserSettingsViewModel();
+        public ApplicationUser User { get; set; } = new ApplicationUser();
         public IEnumerable<Trip> UserTrips { get; set; } = new List<Trip>();
     }
 }
