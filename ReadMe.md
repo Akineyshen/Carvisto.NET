@@ -1,7 +1,7 @@
 # Carvisto – Carpooling Platform
 ![Language](https://img.shields.io/badge/Language-C%23-brightgreen?style=for-the-badge&logo=sharp&logoColor=813787&color=813787&labelColor=FCFCFC)
 ![Framework](https://img.shields.io/badge/Framework-.NET-brightgreen?style=for-the-badge&logo=dotnet&logoColor=813787&color=813787&labelColor=FCFCFC)
-![Size](https://img.shields.io/github/repo-size/Akineyshen/TetrisJavaFX?label=Size&style=for-the-badge&color=813787&labelColor=FCFCFC)
+![Size](https://img.shields.io/github/repo-size/Akineyshen/Carvisto.NET?label=Size&style=for-the-badge&color=813787&labelColor=FCFCFC)
 ![Last Commit](https://img.shields.io/github/last-commit/Akineyshen/TetrisJavaFX?label=Last%20Commit&style=for-the-badge&color=813787&labelColor=FCFCFC)
 
 ## Features
