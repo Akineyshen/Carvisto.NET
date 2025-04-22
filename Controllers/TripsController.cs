@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Carvisto.Data;
 using Carvisto.Models;
 
-namespace TravelPlatform.Controllers
+namespace Carvisto.Controllers
 {
     [Authorize]
     public class TripsController : Controller
@@ -23,13 +23,6 @@ namespace TravelPlatform.Controllers
         public async Task<IActionResult> Index()
         {
             var trips = await _context.Trips.Include(t => t.Driver).ToListAsync();
-            return View(trips);
-        }
-
-        public async Task<IActionResult> MyTrips()
-        {
-            var userId = _userManager.GetUserId(User);
-            var trips = await _context.Trips.Where(t => t.DriverId == userId).ToListAsync();
             return View(trips);
         }
 
@@ -53,7 +46,7 @@ namespace TravelPlatform.Controllers
             if (user.ContactName == "Unknown" || user.ContactPhone == "Unknown")
             {
                 TempData["ErrorMessage"] = "Please update your contact information in settings before creating a trip.";
-                return RedirectToAction("Settings", "Account");
+                return RedirectToAction("Index", "Account");
             }
 
             var userId = _userManager.GetUserId(User);
@@ -87,7 +80,7 @@ namespace TravelPlatform.Controllers
                 return View(trip);
             }
 
-            return RedirectToAction(nameof(MyTrips));
+            return RedirectToAction("Index", "Account");
         }
 
         [HttpGet]
@@ -106,13 +99,13 @@ namespace TravelPlatform.Controllers
             if (string.IsNullOrEmpty(trip.DriverId))
             {
                 TempData["ErrorMessage"] = "This trip has no assigned driver. Please contact support.";
-                return RedirectToAction(nameof(MyTrips));
+                return RedirectToAction("Index", "Account");
             }
 
             if (trip.DriverId != userId && !isModerator)
             {
                 TempData["ErrorMessage"] = "You do not have permission to edit this trip.";
-                return RedirectToAction(nameof(MyTrips));
+                return RedirectToAction("Index", "Account");
             }
 
             return View(trip);
@@ -137,13 +130,13 @@ namespace TravelPlatform.Controllers
             if (string.IsNullOrEmpty(originalTrip.DriverId))
             {
                 TempData["ErrorMessage"] = "This trip has no assigned driver. Please contact support.";
-                return RedirectToAction(nameof(MyTrips));
+                return RedirectToAction("Index", "Account");
             }
 
             if (originalTrip.DriverId != userId && !isModerator)
             {
                 TempData["ErrorMessage"] = "You do not have permission to edit this trip.";
-                return RedirectToAction(nameof(MyTrips));
+                return RedirectToAction("Index", "Account");
             }
 
             if (!ModelState.IsValid)
@@ -175,7 +168,7 @@ namespace TravelPlatform.Controllers
                 return View(trip);
             }
 
-            return RedirectToAction(nameof(MyTrips));
+            return RedirectToAction("Index", "Account");
         }
 
         [HttpGet]
@@ -206,7 +199,7 @@ namespace TravelPlatform.Controllers
 
             _context.Trips.Remove(trip);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(MyTrips));
+            return RedirectToAction("Index", "Account");
         }
     }
 }

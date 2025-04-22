@@ -112,7 +112,7 @@ namespace Carvisto.Controllers
 
             var model = new AccountViewModel
             {
-                UserSettings = new UserSettingsViewModel()
+                User= new ApplicationUser()
                 {
                     ContactName = user.ContactName ?? "Unknown",
                     ContactPhone = user.ContactPhone ?? "Unknown"
@@ -132,8 +132,8 @@ namespace Carvisto.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null) return NotFound();
 
-                user.ContactName = model.UserSettings.ContactName;
-                user.ContactPhone = model.UserSettings.ContactPhone;
+                user.ContactName = model.User.ContactName;
+                user.ContactPhone = model.User.ContactPhone;
 
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
