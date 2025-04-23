@@ -1,29 +1,19 @@
-using Carvisto.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Carvisto.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
+using Carvisto.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Carvisto.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly CarvistoDbContext _context;
+        private readonly IAccountService _accountService;
 
-        public AccountController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            RoleManager<IdentityRole> roleManager,
-            CarvistoDbContext context)
+        public AccountController(IAccountService accountService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _roleManager = roleManager;
-            _context = context;
+            _accountService = accountService;
         }
 
         [HttpGet]
@@ -31,30 +21,26 @@ namespace Carvisto.Controllers
         {
             return View();
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
-                {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    ContactName = "Unknown", // Domyślna wartość
-                    ContactPhone = "Unknown" // Domyślna wartość
-                };
-                var result = await _userManager.CreateAsync(user, model.Password);
-
+                var result = await _accountService.RegisterUserAsync(model.Email, model.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "User");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index"); // Przekieruj do ustawień po rejestracji
+                    var user = await _accountService.GetUserByEmailAsync(model.Email);
+                    
+                    await _accountService.AddUserToRoleAsync(user, "User");
+                    await _accountService.SignInUserAsync(user, isPersistent: false);
+                    
+                    return RedirectToAction("Index");
                 }
+
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError("", error.Description);
                 }
             }
             return View(model);
@@ -71,17 +57,17 @@ namespace Carvisto.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _accountService.LoginUserAsync(model.Email, model.Password, model.RememberMe);
                 if (result.Succeeded)
                 {
-                    var user = await _userManager.FindByEmailAsync(model.Email);
-                    if (user.ContactName == "Unknown" || user.ContactPhone == "Unknown")
+                    var user = await _accountService.GetUserByEmailAsync(model.Email);
+                    if (string.IsNullOrEmpty(user.ContactName) || string.IsNullOrEmpty(user.ContactPhone))
                     {
                         return RedirectToAction("Index", "Account");
                     }
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                ModelState.AddModelError("", "Invalid login attempt.");
             }
             return View(model);
         }
@@ -89,7 +75,7 @@ namespace Carvisto.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await _accountService.LogoutAsync();
             return RedirectToAction("Index", "Home");
         }
 
@@ -103,55 +89,45 @@ namespace Carvisto.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null) return NotFound();
-
-            var trips = await _context.Trips
-                .Where(t => t.DriverId == user.Id)
-                .ToListAsync();
-
-            var model = new AccountViewModel
+            var user = await _accountService.GetCurrentUserAsync();
+            if (user == null)
             {
-                User= new ApplicationUser()
-                {
-                    ContactName = user.ContactName ?? "Unknown",
-                    ContactPhone = user.ContactPhone ?? "Unknown"
-                },
-                UserTrips = trips
-            };
+                return NotFound();
+            }
             
+            var model = await _accountService.GetAccountViewModelAsync(user.Id);
             return View(model);
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Index(AccountViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateProfile(AccountViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null) return NotFound();
-
-                user.ContactName = model.User.ContactName;
-                user.ContactPhone = model.User.ContactPhone;
-
-                var result = await _userManager.UpdateAsync(user);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index");
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                return View("Index", model);
             }
             
-            var currentUser = await _userManager.GetUserAsync(User);
-            model.UserTrips = await _context.Trips
-                .Where(t => t.DriverId == currentUser.Id)
-                .ToListAsync();
+            var user = await _accountService.GetCurrentUserAsync();
+            user.ContactName = model.User.ContactName;
+            user.ContactPhone = model.User.ContactPhone;
             
-            return View(model);
+            var result = await _accountService.UpdateUserAsync(user);
+            
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "Profile updated successfully!";
+                return RedirectToAction("Index");
+            }
+
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(String.Empty, error.Description);
+            }
+            
+            return RedirectToAction("Index", model);
         }
     }
 }

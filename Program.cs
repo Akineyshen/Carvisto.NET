@@ -18,6 +18,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITripService, TripService>();
 
 var app = builder.Build();
