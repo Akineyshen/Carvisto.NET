@@ -161,7 +161,7 @@ namespace Carvisto.Controllers
         
         // GET: Search trips
         [HttpGet]
-        public async Task<IActionResult> Search(SearchTripViewModel model)
+        public async Task<IActionResult> Search(string StartLocation, string EndLocation, DateTime? DepartureDate, SearchTripViewModel model)
         {
             var trips = _tripService.GetTripsQuery();
 
@@ -184,6 +184,10 @@ namespace Carvisto.Controllers
             }
 
             var results = await trips.ToListAsync();
+
+            ViewData["StartLocation"] = StartLocation;
+            ViewData["EndLocation"] = EndLocation;
+            ViewData["DepartureDate"] = DepartureDate?.ToString("yyyy-MM-dd");
             
             return View("Index", results);
         }

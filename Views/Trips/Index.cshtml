@@ -8,7 +8,7 @@
         <div class="search-panel">
             <form asp-controller="Trips" asp-action="Search" method="get" class="search-fields">
                 <div class="search-field">
-                    <input type="text" id="StartLocation" name="StartLocation" placeholder="City Departure"/>
+                    <input type="text" id="StartLocation" name="StartLocation" value="@ViewData["StartLocation"]" placeholder="City Departure"/>
                 </div>
                 <button type="button" class="swap-btn" aria-label="Swap locations">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
@@ -17,11 +17,11 @@
                     </svg>
                 </button>
                 <div class="search-field">
-                    <input type="text" id="EndLocation" name="EndLocation" placeholder="City Arrival"/>
+                    <input type="text" id="EndLocation" name="EndLocation" value="@ViewData["EndLocation"]" placeholder="City Arrival"/>
                 </div>
                 <div class="search-field">
                     <div class="search-field custom-date">
-                        <input type="date" name="DepartureDate"/>
+                        <input type="date" name="DepartureDate" value="@ViewData["DepartureDate"]"/>
                     </div>
                 </div>
                 <button type="submit" class="search-btn">Search</button>
