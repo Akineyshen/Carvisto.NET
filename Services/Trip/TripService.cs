@@ -67,5 +67,10 @@ namespace Carvisto.Services
         {
             return _context.Trips.Any(e => e.Id == id);
         }
+
+        public IQueryable<Trip> GetTripsQuery()
+        {
+            return _context.Trips.Include(t => t.Driver);
+        }
     }
 }

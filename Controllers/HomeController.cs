@@ -31,26 +31,7 @@ namespace Carvisto.Controllers
         [HttpGet]
         public async Task<IActionResult> Search(SearchTripViewModel model)
         {
-            var trips = _context.Trips.AsQueryable();
-
-            if (!string.IsNullOrEmpty(model.StartLocation))
-            {
-                trips = trips.Where(t => t.StartLocation.StartsWith(model.StartLocation));
-            }
-
-            if (!string.IsNullOrEmpty(model.EndLocation))
-            {
-                trips = trips.Where(t => t.EndLocation.EndsWith(model.EndLocation));
-            }
-
-            if (model.DepartureDate.HasValue)
-            {
-                trips = trips.Where(t => t.DepartureDateTime.Date == model.DepartureDate.Value.Date);
-            }
-            
-            var results = await trips.ToListAsync();
-            
-            return View("SearchResults", results);
+            return RedirectToAction("Search", "Trips", model);
         }
 
         public IActionResult Privacy()

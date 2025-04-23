@@ -6,7 +6,7 @@
 <div class="trips-page">
     <div class="search-trip">
         <div class="search-panel">
-            <form asp-action="Search" method="get" class="search-fields">
+            <form asp-controller="Trips" asp-action="Search" method="get" class="search-fields">
                 <div class="search-field">
                     <input type="text" id="StartLocation" name="StartLocation" placeholder="City Departure"/>
                 </div>
@@ -24,7 +24,7 @@
                         <input type="date" name="DepartureDate"/>
                     </div>
                 </div>
-                <button type="submit" class="search-btn">Найти</button>
+                <button type="submit" class="search-btn">Search</button>
             </form>
         </div>
     </div>

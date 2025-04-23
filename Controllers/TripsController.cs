@@ -158,5 +158,34 @@ namespace Carvisto.Controllers
             await _tripService.DeleteTripAsync(id);
             return RedirectToAction(nameof(Index));
         }
+        
+        // GET: Search trips
+        [HttpGet]
+        public async Task<IActionResult> Search(SearchTripViewModel model)
+        {
+            var trips = _tripService.GetTripsQuery();
+
+            if (!string.IsNullOrEmpty(model.StartLocation))
+            {
+                trips = trips
+                    .Where(t => t.StartLocation.StartsWith(model.StartLocation));
+            }
+
+            if (!string.IsNullOrEmpty(model.EndLocation))
+            {
+                trips = trips
+                    .Where(t => t.EndLocation.EndsWith(model.EndLocation));
+            }
+
+            if (model.DepartureDate.HasValue)
+            {
+                trips = trips
+                    .Where(t => t.DepartureDateTime.Date == model.DepartureDate.Value.Date);
+            }
+
+            var results = await trips.ToListAsync();
+            
+            return View("Index", results);
+        }
     }
 }

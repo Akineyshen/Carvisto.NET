@@ -10,6 +10,7 @@ namespace Carvisto.Services
         Task UpdateTripAsync(Trip trip);
         Task DeleteTripAsync(int id);
         bool TripExists(int id);
+        IQueryable<Trip> GetTripsQuery();
     }
 }
 
