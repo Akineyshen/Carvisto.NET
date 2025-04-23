@@ -9,11 +9,13 @@ namespace Carvisto.Controllers
     {
         private readonly CarvistoDbContext _context;
 
+        // Embedding the DB context through the constructor
         public HomeController(CarvistoDbContext context)
         {
             _context = context;
         }
 
+        // Home page: 9 recent trips with driver data + search form
         public async Task<IActionResult> Index()
         {
             var model = new HomeViewModel
@@ -28,12 +30,14 @@ namespace Carvisto.Controllers
             return View(model);
         }
 
+        // Redirecting the search query to the Trips controller
         [HttpGet]
         public async Task<IActionResult> Search(SearchTripViewModel model)
         {
             return RedirectToAction("Search", "Trips", model);
         }
 
+        // Static Privacy Policy page
         public IActionResult Privacy()
         {
             return View();
