@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Carvisto.Data;
 using Carvisto.Models;
+using Carvisto.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<ITripService, TripService>();
 
 var app = builder.Build();
 

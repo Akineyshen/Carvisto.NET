@@ -10,6 +10,8 @@
         <form asp-action="Create" method="post" class="auth-form trip-form">
             <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
 
+            <input type="hidden" asp-for="DriverId" value="@ViewBag.DriverId" />
+
             <div class="form-group">
                 <label asp-for="StartLocation" class="form-label">From</label>
                 <input asp-for="StartLocation" class="form-input" placeholder="Enter departure city" />

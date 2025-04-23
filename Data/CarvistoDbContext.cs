@@ -11,7 +11,7 @@ namespace Carvisto.Data
         {
         }
         
-        public DbSet<Trip>  Trips { get; set; }
+        public DbSet<Trip> Trips { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,205 +1,162 @@
+using Carvisto.Models;
+using Carvisto.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Carvisto.Data;
-using Carvisto.Models;
+using System.Security.Claims;
 
 namespace Carvisto.Controllers
 {
-    [Authorize]
     public class TripsController : Controller
     {
-        private readonly CarvistoDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ITripService _tripService; // Service for working with trips
+        private readonly UserManager<ApplicationUser> _userManager; // User Manager
 
-        public TripsController(CarvistoDbContext context, UserManager<ApplicationUser> userManager)
+        // DI constructor
+        public TripsController(ITripService tripService, UserManager<ApplicationUser> userManager)
         {
-            _context = context;
+            _tripService = tripService;
             _userManager = userManager;
         }
 
-        [AllowAnonymous]
+        // GET: List of all trips
         public async Task<IActionResult> Index()
         {
-            var trips = await _context.Trips.Include(t => t.Driver).ToListAsync();
+            var trips = await _tripService.GetAllTripsAsync();
             return View(trips);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Create()
+        // GET: Form for creating a trip
+        [Authorize]
+        public IActionResult Create()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user.ContactName == "Unknown" || user.ContactPhone == "Unknown")
-            {
-                TempData["ErrorMessage"] = "Please update your contact information in settings before creating a trip.";
-                return RedirectToAction("Index", "Account");
-            }
+            // Setting the current user as the driver
+            ViewBag.DriverId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return View();
         }
 
+        // POST: Processing the creation of a trip
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create(Trip trip)
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user.ContactName == "Unknown" || user.ContactPhone == "Unknown")
-            {
-                TempData["ErrorMessage"] = "Please update your contact information in settings before creating a trip.";
-                return RedirectToAction("Index", "Account");
-            }
-
-            var userId = _userManager.GetUserId(User);
-            if (string.IsNullOrEmpty(userId))
-            {
-                ModelState.AddModelError("", "User is not authenticated.");
-                return View(trip);
-            }
-
-            trip.DriverId = userId;
-            ModelState.Remove("DriverId");
-
             if (!ModelState.IsValid)
             {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                // Logging validation errors
+                foreach (var state in ModelState)
                 {
-                    Console.WriteLine(error.ErrorMessage);
+                    if (state.Value.Errors.Count > 0)
+                    {
+                        Console.WriteLine($"Error: {state.Key}: {state.Value.Errors[0].ErrorMessage}");
+
+                    }
                 }
                 return View(trip);
             }
 
             try
             {
-                _context.Add(trip);
-                await _context.SaveChangesAsync();
-                Console.WriteLine($"Trip created with DriverId: {trip.DriverId}");
+                // Linking the current user as a driver
+                trip.DriverId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                trip.Driver = await _userManager.FindByIdAsync(trip.DriverId);
+
+                await _tripService.CreateTripAsync(trip);
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error saving trip: {ex.Message}");
+                ModelState.AddModelError("", $"Ошибка при создании поездки: {ex.Message}");
                 return View(trip);
             }
-
-            return RedirectToAction("Index", "Account");
         }
 
-        [HttpGet]
+        // GET: Trip editing form
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
-            var trip = await _context.Trips.FindAsync(id);
-            if (trip == null) return NotFound();
+            var trip = await _tripService.GetTripByIdAsync(id);
 
-            var userId = _userManager.GetUserId(User);
-            var isModerator = await _userManager.IsInRoleAsync(await _userManager.GetUserAsync(User), "Moderator");
-
-            Console.WriteLine($"User ID: {userId}");
-            Console.WriteLine($"Trip Driver ID: {trip.DriverId}");
-            Console.WriteLine($"Is Moderator: {isModerator}");
-
-            if (string.IsNullOrEmpty(trip.DriverId))
+            // Checking access rights (owner or moderator)
+            if (trip.DriverId != User.FindFirstValue(ClaimTypes.NameIdentifier) && !User.IsInRole("Moderator"))
             {
-                TempData["ErrorMessage"] = "This trip has no assigned driver. Please contact support.";
-                return RedirectToAction("Index", "Account");
-            }
-
-            if (trip.DriverId != userId && !isModerator)
-            {
-                TempData["ErrorMessage"] = "You do not have permission to edit this trip.";
-                return RedirectToAction("Index", "Account");
+                return Forbid();
             }
 
             return View(trip);
         }
 
+        // POST: Editing Processing
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, Trip trip)
         {
-            if (id != trip.Id) return NotFound();
-
-            var originalTrip = await _context.Trips.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
-            if (originalTrip == null) return NotFound();
-
-            var userId = _userManager.GetUserId(User);
-            var isModerator = await _userManager.IsInRoleAsync(await _userManager.GetUserAsync(User), "Moderator");
-
-            Console.WriteLine($"User ID: {userId}");
-            Console.WriteLine($"Trip Driver ID: {originalTrip.DriverId}");
-            Console.WriteLine($"Is Moderator: {isModerator}");
-
-            if (string.IsNullOrEmpty(originalTrip.DriverId))
+            if (id != trip.Id)
             {
-                TempData["ErrorMessage"] = "This trip has no assigned driver. Please contact support.";
-                return RedirectToAction("Index", "Account");
+                return NotFound();
             }
 
-            if (originalTrip.DriverId != userId && !isModerator)
+            var existingTrip = await _tripService.GetTripByIdAsync(id);
+
+            if (existingTrip.DriverId != User.FindFirstValue(ClaimTypes.NameIdentifier) && !User.IsInRole("Moderator"))
             {
-                TempData["ErrorMessage"] = "You do not have permission to edit this trip.";
-                return RedirectToAction("Index", "Account");
+                return Forbid();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                try
                 {
-                    Console.WriteLine($"Validation error: {error.ErrorMessage}");
+                    trip.DriverId = existingTrip.DriverId; // Сохраняем оригинального водителя
+                    await _tripService.UpdateTripAsync(trip);
                 }
-                return View(trip);
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_tripService.TripExists(trip.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
             }
-
-            try
-            {
-                originalTrip.StartLocation = trip.StartLocation;
-                originalTrip.EndLocation = trip.EndLocation;
-                originalTrip.DepartureDateTime = trip.DepartureDateTime;
-                originalTrip.Price = trip.Price;
-                originalTrip.VehicleBrand = trip.VehicleBrand;
-                originalTrip.Comments = trip.Comments;
-                originalTrip.DriverId = originalTrip.DriverId;
-
-                _context.Update(originalTrip);
-                await _context.SaveChangesAsync();
-                Console.WriteLine("Trip updated successfully!");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error saving trip: {ex.Message}");
-                return View(trip);
-            }
-
-            return RedirectToAction("Index", "Account");
+            return View(trip);
         }
 
-        [HttpGet]
+        // GET: Confirmation of deletion
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            var trip = await _context.Trips.FindAsync(id);
-            if (trip == null) return NotFound();
+            var trip = await _tripService.GetTripByIdAsync(id);
 
-            var userId = _userManager.GetUserId(User);
-            var isModerator = await _userManager.IsInRoleAsync(await _userManager.GetUserAsync(User), "Moderator");
-
-            if (trip.DriverId != userId && !isModerator) return Forbid();
+            if (trip.DriverId != User.FindFirstValue(ClaimTypes.NameIdentifier) && !User.IsInRole("Moderator"))
+            {
+                return Forbid();
+            }
 
             return View(trip);
         }
 
+        // POST: Deletion Processing
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var trip = await _context.Trips.FindAsync(id);
-            if (trip == null) return NotFound();
-
-            var userId = _userManager.GetUserId(User);
-            var isModerator = await _userManager.IsInRoleAsync(await _userManager.GetUserAsync(User), "Moderator");
-
-            if (trip.DriverId != userId && !isModerator) return Forbid();
-
-            _context.Trips.Remove(trip);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Account");
+            var trip = await _tripService.GetTripByIdAsync(id);
+            
+            if (trip.DriverId != User.FindFirstValue(ClaimTypes.NameIdentifier) && !User.IsInRole("Moderator"))
+            {
+                return Forbid();
+            }
+            
+            await _tripService.DeleteTripAsync(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
