@@ -24,5 +24,20 @@ namespace Carvisto.Models
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
     }
+
+    public class ChangePasswordViewModel
+    {
+        [Required]
+        [DataType(DataType.Password)]
+        public string CurrentPassword { get; set; }
+        
+        [Required]
+        [DataType(DataType.Password)]
+        public string NewPassword { get; set; }
+        
+        [Required]
+        [DataType(DataType.Password)]
+        public string ConfirmPassword { get; set; }
+    }
 }
 

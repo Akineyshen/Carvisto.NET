@@ -27,7 +27,45 @@
             </div>
         </form>
     </div>
+
+    <!-- Форма смены пароля -->
+    <div class="settings-card mt-4">
+        <h2 class="settings-title">Смена пароля</h2>
+
+        @if (TempData["PasswordChangeSuccess"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["PasswordChangeSuccess"]
+            </div>
+        }
+
+        <form asp-controller="Account" asp-action="ChangePassword" method="post" class="settings-form">
+            <div class="form-group">
+                <label asp-for="ChangePassword.CurrentPassword" class="form-label">Текущий пароль</label>
+                <input name="CurrentPassword" class="form-input" type="password" placeholder="Введите текущий пароль" />
+                <span asp-validation-for="ChangePassword.CurrentPassword" class="validation-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ChangePassword.NewPassword" class="form-label">Новый пароль</label>
+                <input name="NewPassword" class="form-input" type="password" placeholder="Введите новый пароль" />
+                <span asp-validation-for="ChangePassword.NewPassword" class="validation-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ChangePassword.ConfirmPassword" class="form-label">Подтвердите новый пароль</label>
+                <input name="ConfirmPassword" class="form-input" type="password" placeholder="Подтвердите новый пароль" />
+                <span asp-validation-for="ChangePassword.ConfirmPassword" class="validation-message"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="auth-button">Сохранить пароль</button>
+            </div>
+        </form>
+    </div>
 </div>
+
+
 
 <!-- Раздел с поездками -->
 <div class="settings-card mt-4">

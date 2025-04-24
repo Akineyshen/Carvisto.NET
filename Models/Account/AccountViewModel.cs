@@ -6,5 +6,6 @@ namespace Carvisto.Models
     {
         public ApplicationUser User { get; set; } = new ApplicationUser();
         public IEnumerable<Trip> UserTrips { get; set; } = new List<Trip>();
+        public ChangePasswordViewModel ChangePassword { get; set; } = new ChangePasswordViewModel();
     }
 }

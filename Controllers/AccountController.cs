@@ -129,5 +129,38 @@ namespace Carvisto.Controllers
             
             return RedirectToAction("Index", model);
         }
+        
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var viewModel = await _accountService.GetAccountViewModelAsync(null); // здесь нужно получить текущего пользователя
+                viewModel.ChangePassword = model;
+                return View("Index", viewModel);
+            }
+
+            var user = await _accountService.GetCurrentUserAsync();
+            var result = await _accountService.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                TempData["PasswordChangeSuccess"] = "Пароль успешно изменен";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+           
+                var viewModel = await _accountService.GetAccountViewModelAsync(null);
+                viewModel.ChangePassword = model;
+                return View("Index", viewModel);
+            }
+        }
     }
 }

@@ -95,8 +95,33 @@ namespace Carvisto.Services
                     ContactName = user.ContactName ?? "",
                     ContactPhone = user.ContactPhone ?? ""
                 },
-                UserTrips = trips
+                UserTrips = trips,
+                ChangePassword = new ChangePasswordViewModel()
             };
+        }
+
+        public async Task<IdentityResult> ChangePasswordAsync(ApplicationUser user, string currentPassword,
+            string newPassword)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            if (!await _userManager.CheckPasswordAsync(user, currentPassword))
+            {
+                return IdentityResult.Failed(new IdentityError
+                {
+                    Description = "Incorrect password",
+                });
+            }
+            
+            return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        }
+        
+        public async Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
+        {
+            return await _userManager.CheckPasswordAsync(user, password);
         }
     }
 }

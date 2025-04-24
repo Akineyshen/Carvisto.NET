@@ -15,5 +15,7 @@ namespace Carvisto.Services
         Task<IdentityResult> UpdateUserAsync(ApplicationUser user);
         Task AddUserToRoleAsync(ApplicationUser user, string role);
         Task<AccountViewModel> GetAccountViewModelAsync(string userId);
+        Task<IdentityResult> ChangePasswordAsync(ApplicationUser user, string currentPassword, string newPassword);
+        Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
     }
 }
