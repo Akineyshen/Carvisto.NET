@@ -29,7 +29,7 @@ namespace Carvisto.Models
         
         [ForeignKey("Driver")]
         public string DriverId { get; set; }
-        public ApplicationUser? Driver { get; set; } // Oznacz jako opcjonalny (nullable)
+        public ApplicationUser? Driver { get; set; }
     }
 }
 
