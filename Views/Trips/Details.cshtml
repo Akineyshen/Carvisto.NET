@@ -1,0 +1,82 @@
+@model Carvisto.Models.Trip
+
+@{
+    ViewData["Title"] = "Детали поездки";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>Детали поездки</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Пункт отправления:</dt>
+                        <dd class="col-sm-8">@Model.StartLocation</dd>
+                        
+                        <dt class="col-sm-4">Пункт назначения:</dt>
+                        <dd class="col-sm-8">@Model.EndLocation</dd>
+                        
+                        <dt class="col-sm-4">Дата и время отправления:</dt>
+                        <dd class="col-sm-8">@Model.DepartureDateTime.ToString("dd.MM.yyyy HH:mm")</dd>
+                        
+                        <dt class="col-sm-4">Стоимость:</dt>
+                        <dd class="col-sm-8">@Model.Price.ToString("C")</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Автомобиль:</dt>
+                        <dd class="col-sm-8">@Model.VehicleBrand</dd>
+                        
+                        <dt class="col-sm-4">Водитель:</dt>
+                        <dd class="col-sm-8">@(Model.Driver?.UserName ?? "Не указан")</dd>
+                        
+                        <dt class="col-sm-4">Комментарии:</dt>
+                        <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.Comments) ? "Нет комментариев" : Model.Comments)</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group">
+                <a asp-action="Index" class="btn btn-secondary">Назад к списку</a>
+                
+                @if (ViewBag.IsOwner || ViewBag.IsModerator)
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редактировать</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        Удалить
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.IsOwner || ViewBag.IsModerator)
+{
+    <!-- Модальное окно подтверждения удаления -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Подтверждение удаления</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    Вы уверены, что хотите удалить эту поездку?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}

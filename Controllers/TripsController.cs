@@ -191,5 +191,36 @@ namespace Carvisto.Controllers
             
             return View("Index", results);
         }
+        
+        // GET: Details trips
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            try
+            {
+                var trip = await _tripService.GetTripByIdAsync(id);
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    ViewBag.IsOwner = trip.DriverId == User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    ViewBag.IsModerator = User.IsInRole("Moderator");
+                }
+                else
+                {
+                    ViewBag.IsOwner = false;
+                    ViewBag.IsModerator = false;
+                }
+
+                return View(trip);
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
     }
 }
