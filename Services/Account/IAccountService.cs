@@ -6,7 +6,7 @@ namespace Carvisto.Services
 {
     public interface IAccountService
     {
-        Task<IdentityResult> RegisterUserAsync(string email, string password);
+        Task<IdentityResult> RegisterUserAsync(string email, string password, string contactName, string contactPhone);
         Task<SignInResult> LoginUserAsync(string email, string password, bool rememberMe);
         Task SignInUserAsync(ApplicationUser user, bool isPersistent);
         Task LogoutAsync();

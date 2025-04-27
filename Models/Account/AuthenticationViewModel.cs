@@ -22,7 +22,15 @@ namespace Carvisto.Models
     {
         [Required]
         [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Passwords do not match")]
         public string ConfirmPassword { get; set; }
+        
+        [Required(ErrorMessage = "You must specify the name")]
+        public string ContactName { get; set; }
+        
+        [Required(ErrorMessage = "You must specify the phone number")]
+        [Phone(ErrorMessage = "Invalid phone number")]
+        public string ContactPhone { get; set; }
     }
 
     public class ChangePasswordViewModel

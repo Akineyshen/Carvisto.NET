@@ -27,7 +27,12 @@ namespace Carvisto.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _accountService.RegisterUserAsync(model.Email, model.Password);
+                var result = await _accountService.RegisterUserAsync(
+                    model.Email,
+                    model.Password,
+                    model.ContactName,
+                    model.ContactPhone);
+                
                 if (result.Succeeded)
                 {
                     var user = await _accountService.GetUserByEmailAsync(model.Email);
@@ -102,32 +107,64 @@ namespace Carvisto.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateProfile(AccountViewModel model)
+        public async Task<IActionResult> UpdateProfile(ApplicationUser user)
         {
-            if (!ModelState.IsValid)
+            
+            if (ModelState.IsValid)
             {
-                return View("Index", model);
-            }
-            
-            var user = await _accountService.GetCurrentUserAsync();
-            user.ContactName = model.User.ContactName;
-            user.ContactPhone = model.User.ContactPhone;
-            
-            var result = await _accountService.UpdateUserAsync(user);
-            
-            if (result.Succeeded)
-            {
-                TempData["SuccessMessage"] = "Profile updated successfully!";
-                return RedirectToAction("Index");
-            }
+                var currentUser = await _accountService.GetCurrentUserAsync();
+                if (currentUser != null)
+                {
+                    string originalEmail = currentUser.Email;
+                    
+                    currentUser.ContactName = user.ContactName;
+                    currentUser.ContactPhone = user.ContactPhone;
+                    
+                    bool emailChanged = !string.Equals(originalEmail, user.Email, StringComparison.OrdinalIgnoreCase);
 
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(String.Empty, error.Description);
+                    if (emailChanged)
+                    {
+                        var existingUser = await _accountService.GetUserByEmailAsync(user.Email);
+                        if (existingUser != null && existingUser.Id != currentUser.Id)
+                        {
+                            TempData["ProfileUpdateError"] = "Email is already in use.";
+                            return RedirectToAction("Index", "Account");
+                        }
+                        
+                        currentUser.Email = user.Email;
+                        currentUser.UserName = user.Email;
+                    }
+                    
+                    
+                    var result = await _accountService.UpdateUserAsync(currentUser);
+                    
+                    if (result.Succeeded)
+                    {
+                        TempData["ProfileUpdateSuccess"] = "Information successfully updated.";
+                        
+                        return RedirectToAction("Index", "Account");
+                    }
+                    else
+                    {
+                        var errorMessages = string.Join("<br>", result.Errors.Select(e => e.Description));
+                        TempData["ProfileUpdateError"] = errorMessages;
+                        return RedirectToAction("Index", "Account");
+                    }
+                }
+                else
+                {
+                    TempData["ProfileUpdateError"] = "User not found.";
+                    return RedirectToAction("Index", "Account");
+                }
             }
-            
-            return RedirectToAction("Index", model);
+            else
+            {
+                var modelErrors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage);
+                TempData["ProfileUpdateError"] = string.Join("<br>", modelErrors);
+                return RedirectToAction("Index", "Account");
+            }
         }
         
         [Authorize]
@@ -135,6 +172,19 @@ namespace Carvisto.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
+            if (string.IsNullOrEmpty(model.CurrentPassword) || string.IsNullOrEmpty(model.NewPassword) ||
+                string.IsNullOrEmpty(model.ConfirmPassword))
+            {
+                TempData["PasswordError"] = "All fields for changing the password must be filled in.";
+                return RedirectToAction("Index", "Account");
+            }
+
+            if (model.NewPassword != model.ConfirmPassword)
+            {
+                TempData["PasswordError"] = "New passwords do not match.";
+                return RedirectToAction("Index", "Account");
+            }
+            
             if (!ModelState.IsValid)
             {
                 var viewModel = await _accountService.GetAccountViewModelAsync(null); // здесь нужно получить текущего пользователя
@@ -147,19 +197,14 @@ namespace Carvisto.Controllers
 
             if (result.Succeeded)
             {
-                TempData["PasswordChangeSuccess"] = "Пароль успешно изменен";
-                return RedirectToAction("Index");
+                TempData["PasswordSuccess"] = "Password changed successfully";
+                return RedirectToAction("Index", "Account");
             }
             else
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-           
-                var viewModel = await _accountService.GetAccountViewModelAsync(null);
-                viewModel.ChangePassword = model;
-                return View("Index", viewModel);
+                var errors = string.Join("<br>", result.Errors.Select(e => e.Description));
+                TempData["PasswordError"] = errors;
+                return RedirectToAction("Index", "Account");
             }
         }
     }

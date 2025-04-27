@@ -28,14 +28,14 @@ namespace Carvisto.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IdentityResult> RegisterUserAsync(string email, string password)
+        public async Task<IdentityResult> RegisterUserAsync(string email, string password, string contactName, string contactPhone)
         {
             var user = new ApplicationUser
             {
                 UserName = email,
                 Email = email,
-                ContactName = "",
-                ContactPhone = ""
+                ContactName = contactName,
+                ContactPhone = contactPhone
             };
             
             return await _userManager.CreateAsync(user, password);
@@ -90,11 +90,7 @@ namespace Carvisto.Services
 
             return new AccountViewModel
             {
-                User = new ApplicationUser
-                {
-                    ContactName = user.ContactName ?? "",
-                    ContactPhone = user.ContactPhone ?? ""
-                },
+                User = user,
                 UserTrips = trips,
                 ChangePassword = new ChangePasswordViewModel()
             };
