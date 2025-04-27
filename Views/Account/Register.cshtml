@@ -3,7 +3,7 @@
     ViewData["Title"] = "Register";
 }
 
-<div class="auth-container">
+<div class="auth-container-register">
     <div class="auth-card">
         <h2 class="auth-title">Create your account</h2>
 
@@ -11,9 +11,21 @@
             <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
 
             <div class="form-group">
+                <label asp-for="ContactName" class="form-label">Full Name</label>
+                <input asp-for="ContactName" class="form-input" placeholder="••••••••" />
+                <span asp-validation-for="ContactName" class="validation-message"></span>
+            </div>
+            
+            <div class="form-group">
                 <label asp-for="Email" class="form-label">Email Address</label>
                 <input asp-for="Email" class="form-input" placeholder="Enter your email" />
                 <span asp-validation-for="Email" class="validation-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ContactPhone" class="form-label">ContactPhone</label>
+                <input asp-for="ContactPhone" class="form-input" placeholder="••••••••" />
+                <span asp-validation-for="ContactPhone" class="validation-message"></span>
             </div>
 
             <div class="form-group">

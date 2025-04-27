@@ -1,10 +1,18 @@
 /* Auth container */
-.auth-container {
+.auth-container-login {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+}
+
+.auth-container-register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 100px;
 }
 
 .auth-card {

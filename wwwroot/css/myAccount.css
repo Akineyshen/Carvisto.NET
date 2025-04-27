@@ -3,6 +3,10 @@
     justify-content: center;
     align-items: flex-start;
     padding: 80px 20px 0px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    gap: 20px;
 }
 
 .settings-card {
@@ -189,4 +193,17 @@
 .logout-button:hover {
     color: white;
     background-color: var(--error-color);
+}
+
+.alert {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.alert-success {
+    color: var(--secondary-color);
+}
+
+.alert-danger {
+    color: var(--error-color);
 }
