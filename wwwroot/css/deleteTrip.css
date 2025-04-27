@@ -1,0 +1,66 @@
+.delete-trip-form {
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    max-width: 1000px;
+    width: 100%;
+    margin: 313px auto;
+}
+
+.delete-trip-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+}
+
+.delete-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: var(--text-dark);
+    text-align: center;
+}
+
+.delete-button-trip {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--error-color);
+    color: white;
+    display: block;
+    padding: 12px 22px;
+    border-radius: 10px;
+    border: none;
+    text-decoration: none;
+    font-size: 16px;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-button-trip:hover {
+    background-color: var(--error-hover);
+}
+
+.back-profile-btn {
+    padding: 12px 22px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.back-profile-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.delete-button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    max-width: 250px;
+    width: 100%;
+    margin: 0 auto;
+}

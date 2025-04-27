@@ -1,4 +1,4 @@
-.create-trip-form {
+.edit-trip-form {
     justify-content: center;
     align-items: center;
     padding: 40px 20px;
@@ -7,7 +7,7 @@
     margin: 80px auto;
 }
 
-.create-trip-card {
+.edit-trip-card {
     background: white;
     border-radius: 20px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);

@@ -5,6 +5,8 @@
 @import "SearchPanel.css";
 @import "cardTrips.css";
 @import "createTrips.css";
+@import "editTrip.css";
+@import "deleteTrip.css";
 
 /* Color */
 :root {

@@ -207,3 +207,20 @@
 .alert-danger {
     color: var(--error-color);
 }
+
+.view-button-account {
+    display: flex;
+    padding: 12px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+    align-items: center;
+    background-color: var(--secondary-color);
+    color: white;
+    align-self: center;
+}
+
+.view-button-account:hover {
+    background-color: var(--secondary-hover);
+}
