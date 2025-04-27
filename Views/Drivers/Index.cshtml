@@ -1,0 +1,66 @@
+@* Views/Drivers/Index.cshtml *@
+@model IEnumerable<Carvisto.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Водители";
+    var currentFilter = ViewData["CurrentFilter"] as string;
+}
+
+<div class="container">
+    <h2 class="my-4">Водители</h2>
+
+    <!-- Добавляем форму поиска -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form asp-action="Index" method="get" class="form-inline">
+                <div class="input-group w-100">
+                    <input type="text" name="searchString" value="@currentFilter" class="form-control"
+                           placeholder="Поиск по имени, телефону или email...">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Поиск
+                        </button>
+                    </div>
+                </div>
+                @if (!string.IsNullOrEmpty(currentFilter))
+                {
+                    <div class="mt-2">
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Сбросить фильтр</a>
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            @if (!string.IsNullOrEmpty(currentFilter))
+            {
+                <p>По вашему запросу "<strong>@currentFilter</strong>" ничего не найдено.</p>
+            }
+            else
+            {
+                <p>В системе нет водителей с поездками.</p>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var driver in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@driver.ContactName</h5>
+                            <p><i class="fas fa-phone"></i> @driver.ContactPhone</p>
+                            <p><i class="fas fa-envelope"></i> @driver.Email</p>
+                            <a asp-action="Details" asp-route-id="@driver.Id" class="btn btn-primary">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

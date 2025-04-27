@@ -118,3 +118,7 @@ footer {
   from { transform: translateY(50px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+
+.container {
+  margin-top: 100px;
+}

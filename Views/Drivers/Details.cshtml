@@ -1,0 +1,88 @@
+@* Views/Drivers/Details.cshtml *@
+@model Carvisto.Models.ViewModels.DriverDetailsViewModel
+
+@{
+    ViewData["Title"] = "Профиль водителя - " + Model.Driver.ContactName;
+}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2>Профиль водителя</h2>
+            <a asp-action="Index" class="btn btn-secondary mb-3">Назад к списку</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Это блок для фото пользователя, если оно есть -->
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    {
+                        <img src="/images/driver_icon.png" alt="Default profile" class="img-fluid rounded mb-3" />
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>@Model.Driver.ContactName</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Email:</strong> @Model.Driver.Email</p>
+                    <p><strong>Телефон:</strong> @Model.Driver.ContactPhone</p>
+                    <p><strong>Количество поездок:</strong> @Model.Trips.Count()</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Поездки водителя</h3>
+            
+            @if (!Model.Trips.Any())
+            {
+                <div class="alert alert-info">
+                    У водителя пока нет активных поездок.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Откуда</th>
+                                <th>Куда</th>
+                                <th>Дата и время</th>
+                                <th>Цена</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var trip in Model.Trips)
+                            {
+                                <tr>
+                                    <td>@trip.StartLocation</td>
+                                    <td>@trip.EndLocation</td>
+                                    <td>@trip.DepartureDateTime.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td>@trip.Price.ToString("C")</td>
+                                    <td>
+                                        <a asp-controller="Trips" asp-action="Details" asp-route-id="@trip.Id" class="btn btn-sm btn-info">Детали</a>
+                                        @if (trip.DepartureDateTime > DateTime.Now)
+                                        {
+                                            <a asp-controller="Trips" asp-action="Book" asp-route-id="@trip.Id" class="btn btn-sm btn-success">Записаться</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
