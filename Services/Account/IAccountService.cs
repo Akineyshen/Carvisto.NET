@@ -17,5 +17,7 @@ namespace Carvisto.Services
         Task<AccountViewModel> GetAccountViewModelAsync(string userId);
         Task<IdentityResult> ChangePasswordAsync(ApplicationUser user, string currentPassword, string newPassword);
         Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
+        Task<string> SaveProfileImageAsync(ApplicationUser user, string uploadFolder, string fileName, byte[] fileBytes);
+        Task<bool> DeleteProfileImageAsync(ApplicationUser user);
     }
 }

@@ -5,6 +5,55 @@
 
 <div class="settings-container">
     <div class="settings-card">
+        <h2 class="settings-title">Profile Image</h2>
+
+        @if (TempData["ImageSuccess"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["ImageSuccess"]
+            </div>
+        }
+
+        @if (TempData["ImageError"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ImageError"]
+            </div>
+        }
+
+        <div class="profile-image-section">
+            <div class="profile-image-container">
+                @if (!string.IsNullOrEmpty(Model.User.ProfileImagePath))
+                {
+                    <img src="@Model.User.ProfileImagePath" alt="Profile Image" class="profile-image" onerror="this.onerror=null; this.src='/images/driver_icon.png';"
+                    />
+                }
+            </div>
+
+            <form asp-controller="Account" asp-action="UploadProfileImage" method="post" enctype="multipart/form-data" class="settings-form">
+                <div class="form-group">
+                    <label for="profileImage" class="form-label">Change profile image</label>
+                    <input id="profileImage" name="profileImage" type="file" accept="image/*" class="form-input" />
+                    <small class="form-text text-muted">Maximum file size: 5MB. Allowed formats: JPEG, PNG, GIF.</small>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="auth-button">Upload</button>
+                </div>
+            </form>
+
+            @if (!string.IsNullOrEmpty(Model.User.ProfileImagePath))
+            {
+                <form asp-controller="Account" asp-action="DeleteProfileImage" method="post" class="settings-form mt-2">
+                    <div class="form-actions">
+                        <button type="submit" class="auth-button btn-danger">Remove Image</button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+
+
+    <div class="settings-card">
         <h2 class="settings-title">Account Settings</h2>
 
         @if (TempData["ProfileUpdateSuccess"] != null)
@@ -23,23 +72,23 @@
 
         <form asp-controller="Account" asp-action="UpdateProfile" method="post" class="settings-form">
             <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
-            <input type="hidden" asp-for="User.UserName" />
+            <input type="hidden" asp-for="User.UserName"/>
 
             <div class="form-group">
                 <label asp-for="User.ContactName" class="form-label">Full Name</label>
-                <input asp-for="User.ContactName" class="form-input" placeholder="Enter your full name" />
+                <input asp-for="User.ContactName" class="form-input" placeholder="Enter your full name"/>
                 <span asp-validation-for="User.ContactName" class="validation-message"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="User.Email" class="form-label">Email</label>
-                <input asp-for="User.Email" class="form-input" type="email" placeholder="Введите ваш email" />
+                <input asp-for="User.Email" class="form-input" type="email" placeholder="Введите ваш email"/>
                 <span asp-validation-for="User.Email" class="validation-message"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="User.ContactPhone" class="form-label">Phone Number</label>
-                <input asp-for="User.ContactPhone" class="form-input" type="number" placeholder="Enter your phone number" />
+                <input asp-for="User.ContactPhone" class="form-input" type="number" placeholder="Enter your phone number"/>
                 <span asp-validation-for="User.ContactPhone" class="validation-message"></span>
             </div>
 
@@ -70,19 +119,19 @@
         <form asp-controller="Account" asp-action="ChangePassword" method="post" class="settings-form">
             <div class="form-group">
                 <label asp-for="ChangePassword.CurrentPassword" class="form-label">Current password</label>
-                <input name="CurrentPassword" class="form-input" type="password" placeholder="Enter your current password" />
+                <input name="CurrentPassword" class="form-input" type="password" placeholder="Enter your current password"/>
                 <span asp-validation-for="ChangePassword.CurrentPassword" class="validation-message"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="ChangePassword.NewPassword" class="form-label">New password</label>
-                <input name="NewPassword" class="form-input" type="password" placeholder="Enter a new password" />
+                <input name="NewPassword" class="form-input" type="password" placeholder="Enter a new password"/>
                 <span asp-validation-for="ChangePassword.NewPassword" class="validation-message"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="ChangePassword.ConfirmPassword" class="form-label">Confirm the new password</label>
-                <input name="ConfirmPassword" class="form-input" type="password" placeholder="Confirm the new password" />
+                <input name="ConfirmPassword" class="form-input" type="password" placeholder="Confirm the new password"/>
                 <span asp-validation-for="ChangePassword.ConfirmPassword" class="validation-message"></span>
             </div>
 

@@ -10,5 +10,7 @@ namespace Carvisto.Models
         
         [Required]
         public string ContactPhone { get; set; }
+        
+        public string ProfileImagePath { get; set; }
     }
 }

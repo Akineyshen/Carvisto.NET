@@ -119,5 +119,50 @@ namespace Carvisto.Services
         {
             return await _userManager.CheckPasswordAsync(user, password);
         }
+
+        public async Task<string> SaveProfileImageAsync(ApplicationUser user, string uploadFolder, string fileName, byte[] image)
+        {
+            if (!Directory.Exists(uploadFolder))
+            {
+                Directory.CreateDirectory(uploadFolder);
+            }
+
+            string uniqueFileName = $"{user.Id}_{Guid.NewGuid().ToString()}{Path.GetExtension(fileName)}";
+            string filePath = Path.Combine(uploadFolder, uniqueFileName);
+
+            await DeleteProfileImageAsync(user);
+            
+            await File.WriteAllBytesAsync(filePath, image);
+
+            return $"/images/profiles/{uniqueFileName}";
+        }
+
+        public async Task<bool> DeleteProfileImageAsync(ApplicationUser user)
+        {
+            if (string.IsNullOrEmpty(user.ProfileImagePath))
+            {
+                return false;
+            }
+
+            try
+            {
+                string oldImagePath = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    user.ProfileImagePath.TrimStart('/'));
+
+                if (File.Exists(oldImagePath))
+                {
+                    await Task.Run(() => File.Delete(oldImagePath));
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return false;
+        }
     }
 }

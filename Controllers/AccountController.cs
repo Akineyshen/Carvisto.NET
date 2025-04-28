@@ -207,5 +207,90 @@ namespace Carvisto.Controllers
                 return RedirectToAction("Index", "Account");
             }
         }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadProfileImage(IFormFile profileImage)
+        {
+            if (profileImage == null || profileImage.Length == 0)
+            {
+                TempData["ProfileImageError"] = "No image selected.";
+                return RedirectToAction("Index", "Account");
+            }
+
+            if (profileImage.Length > 1024 * 1024 * 5)
+            {
+                TempData["ProfileImageError"] = "Image size is too large.";
+                return RedirectToAction("Index", "Account");
+            }
+            
+            string[] allowedExtensions = { "image/jpeg", "image/png" };
+            if (!allowedExtensions.Contains(profileImage.ContentType))
+            {
+                TempData["ProfileImageError"] = "Image type is not supported.";
+                return RedirectToAction("Index", "Account");
+            }
+
+            try
+            {
+                var user = await _accountService.GetCurrentUserAsync();
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profiles");
+
+                using var memoryStream = new MemoryStream();
+                await profileImage.CopyToAsync(memoryStream);
+                var fileBytes = memoryStream.ToArray();
+
+                string relativePath = await _accountService.SaveProfileImageAsync(
+                    user,
+                    uploadFolder,
+                    profileImage.FileName,
+                    fileBytes);
+
+                user.ProfileImagePath = relativePath;
+                await _accountService.UpdateUserAsync(user);
+
+                TempData["ProfileImageSuccess"] = "Image successfully uploaded.";
+            }
+            catch (Exception ex)
+            {
+                TempData["ProfileImageError"] = $"Error uploading image: {ex.Message}";
+            }
+            
+            return RedirectToAction("Index", "Account");
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteProfileImage()
+        {
+            try
+            {
+                var user = await _accountService.GetCurrentUserAsync();
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                await _accountService.DeleteProfileImageAsync(user);
+                
+                user.ProfileImagePath = null;
+                await _accountService.UpdateUserAsync(user);
+                
+                TempData["ProfileImageSuccess"] = "Image successfully deleted.";
+            }
+            catch (Exception ex)
+            {
+                TempData["ProfileImageError"] = $"Error deleting image: {ex.Message}";
+            }
+            
+            return RedirectToAction("Index", "Account");
+        }
     }
 }

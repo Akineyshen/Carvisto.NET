@@ -17,9 +17,14 @@
         <div class="col-md-4">
             <!-- Это блок для фото пользователя, если оно есть -->
             <div class="card mb-4">
-                <div class="card-body text-center">
+                <div class="profile-image-container">
+                    @if (!string.IsNullOrEmpty(Model.Driver.ProfileImagePath))
                     {
-                        <img src="/images/driver_icon.png" alt="Default profile" class="img-fluid rounded mb-3" />
+                        <img src="@Model.Driver.ProfileImagePath" alt="Profile Image" class="profile-image" />
+                    }
+                    else
+                    {
+                        <img src="/images/driver_icon.png" alt="Default Profile Image" class="profile-image" />
                     }
                 </div>
             </div>
