@@ -68,7 +68,7 @@
                 </div>
                 <div class="trip-price">
                     <div>
-                        <div class="price-amount">@trip.Price PLN</div>
+                        <div class="price-amount">@trip.Price.ToString("0.##") PLN</div>
                         <div class="price-per-seat">per seat</div>
                     </div>
                     <a asp-action="Details" asp-controller="Trips" asp-route-id="@trip.Id" class="view-button">

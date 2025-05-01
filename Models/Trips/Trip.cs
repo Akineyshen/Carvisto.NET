@@ -19,6 +19,7 @@ namespace Carvisto.Models
         public DateTime DepartureDateTime { get; set; }
         
         [Required]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal Price { get; set; }
         
         [Required]

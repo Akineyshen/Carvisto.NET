@@ -1,7 +1,8 @@
 @model IEnumerable<Carvisto.Models.Trip>
 @{
-    ViewData["Title"] = "Trips";
+    ViewData["Title"] = "Trip";
 }
+
 <script src="/js/site.js"></script>
 <div class="trips-page">
     <div class="search-trip">
@@ -58,7 +59,8 @@
                 </div>
                 <div class="trip-price">
                     <div>
-                        <div class="price-amount">@trip.Price PLN</div>
+                        <div class="price-amount">@trip.Price.ToString("0.##")
+                            PLN</div>
                         <div class="price-per-seat">per seat</div>
                     </div>
                     <a asp-action="Details" asp-route-id="@trip.Id" class="view-button">
