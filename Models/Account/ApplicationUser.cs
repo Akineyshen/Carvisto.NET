@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Carvisto.Models
 {
@@ -11,6 +12,7 @@ namespace Carvisto.Models
         [Required]
         public string ContactPhone { get; set; }
         
-        public string ProfileImagePath { get; set; }
+        [AllowNull]
+        public string? ProfileImagePath { get; set; }
     }
 }
