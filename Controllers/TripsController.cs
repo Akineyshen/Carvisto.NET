@@ -12,12 +12,17 @@ namespace Carvisto.Controllers
     {
         private readonly ITripService _tripService; // Service for working with trips
         private readonly UserManager<ApplicationUser> _userManager; // User Manager
+        private readonly IGoogleMapsService _mapsService; // Google Maps service
 
         // DI constructor
-        public TripsController(ITripService tripService, UserManager<ApplicationUser> userManager)
+        public TripsController(
+            ITripService tripService,
+            UserManager<ApplicationUser> userManager,
+            IGoogleMapsService mapsService)
         {
             _tripService = tripService;
             _userManager = userManager;
+            _mapsService = mapsService;
         }
 
         // GET: List of all trips
@@ -210,6 +215,13 @@ namespace Carvisto.Controllers
                     ViewBag.IsOwner = false;
                     ViewBag.IsModerator = false;
                 }
+                
+                var routeInfo = await _mapsService.GetRouteInfoAsync(
+                    trip.StartLocation, 
+                    trip.EndLocation);
+                
+                ViewBag.RouteDistance = routeInfo.Distance;
+                ViewBag.RouteDuration = routeInfo.Duration;
 
                 return View(trip);
             }

@@ -21,6 +21,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITripService, TripService>();
+builder.Services.AddScoped<IGoogleMapsService, GoogleMapsService>();
+builder.Services.AddHttpClient<IGoogleMapsService, GoogleMapsService>();
+
 
 var app = builder.Build();
 
@@ -60,7 +63,7 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    var moderatorEmail = "moderator@example.com";
+    var moderatorEmail = "moderator@carvisto.com";
     if (await userManager.FindByEmailAsync(moderatorEmail) == null)
     {
         var moderator = new ApplicationUser { UserName = moderatorEmail, Email = moderatorEmail, ContactName = "Moderator", ContactPhone = "123456789" };

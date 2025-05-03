@@ -1,82 +1,174 @@
 @model Carvisto.Models.Trip
+@inject IConfiguration Configuration
+@using Microsoft.Extensions.Configuration
 
 @{
-    ViewData["Title"] = "Детали поездки";
+    ViewBag.Title = "Trip";
 }
 
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header">
-            <h2>Детали поездки</h2>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <dl class="row">
-                        <dt class="col-sm-4">Пункт отправления:</dt>
-                        <dd class="col-sm-8">@Model.StartLocation</dd>
-                        
-                        <dt class="col-sm-4">Пункт назначения:</dt>
-                        <dd class="col-sm-8">@Model.EndLocation</dd>
-                        
-                        <dt class="col-sm-4">Дата и время отправления:</dt>
-                        <dd class="col-sm-8">@Model.DepartureDateTime.ToString("dd.MM.yyyy HH:mm")</dd>
-                        
-                        <dt class="col-sm-4">Стоимость:</dt>
-                        <dd class="col-sm-8">@Model.Price.ToString("C")</dd>
-                    </dl>
+<div class="trip-details-container">
+    <div class="trip-details-card">
+        <div class="trip-header">
+            <div class="trip-header-left">
+                <a asp-action="Index" class="btn-back">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                    </svg>
+                    <span>Back</span>
+                </a>
+                <h2 class="trip-title">Trip Details</h2>
+            </div>
+
+            @if (ViewBag.IsOwner || ViewBag.IsModerator)
+            {
+                <div class="trip-details-actions">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-action btn-edit">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                        </svg>
+                        <span>Edit</span>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" type="button" class="btn-action btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                        </svg>
+                        <span>Delete</span>
+                    </a>
                 </div>
-                <div class="col-md-6">
-                    <dl class="row">
-                        <dt class="col-sm-4">Автомобиль:</dt>
-                        <dd class="col-sm-8">@Model.VehicleBrand</dd>
-                        
-                        <dt class="col-sm-4">Водитель:</dt>
-                        <dd class="col-sm-8">@(Model.Driver?.UserName ?? "Не указан")</dd>
-                        
-                        <dt class="col-sm-4">Комментарии:</dt>
-                        <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.Comments) ? "Нет комментариев" : Model.Comments)</dd>
-                    </dl>
+            }
+        </div>
+
+        <div class="trip-route-container">
+            <div class="trip-details-route">
+                <div class="route-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                    </svg>
+                </div>
+                <div class="route-details">
+                    <div class="route-locations">
+                        <div id="map-container"
+                             data-start-location="Model.StartLocation"
+                             data-end-location="Model.EndLocation">
+                        </div>
+                        <span class="location start-location">@Model.StartLocation</span>
+                        <span class="route-arrow">➞</span>
+                        <span class="location end-location">@Model.EndLocation</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="card-footer">
-            <div class="btn-group">
-                <a asp-action="Index" class="btn btn-secondary">Назад к списку</a>
-                
-                @if (ViewBag.IsOwner || ViewBag.IsModerator)
-                {
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редактировать</a>
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                        Удалить
-                    </button>
-                }
+
+        <div class="trip-details-page">
+            <div class="detail-item">
+                <div class="detail-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+                    </svg>
+                </div>
+                <div class="detail-content">
+                    <div class="detail-label">Departure Time</div>
+                    <div class="detail-value">@Model.DepartureDateTime.ToString("dd.MM.yyyy HH:mm")</div>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679q.05.242.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.8.8 0 0 0 .381-.404l.792-1.848ZM3 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2m10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2M6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2zM2.906 5.189a.51.51 0 0 0 .497.731c.91-.073 3.35-.17 4.597-.17s3.688.097 4.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 11.691 3H4.309a.5.5 0 0 0-.447.276L2.906 5.19Z"/>
+                    </svg>
+                </div>
+                <div class="detail-content">
+                    <div class="detail-label">Vehicle</div>
+                    <div class="detail-value">@Model.VehicleBrand</div>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                        <path d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2z"/>
+                    </svg>
+                </div>
+                <div class="detail-content">
+                    <div class="detail-label">Price</div>
+                    <div class="detail-value price-value">@Model.Price.ToString("0.##") PLN</div>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-icon">
+                    @if (!string.IsNullOrEmpty(Model.Driver.ProfileImagePath))
+                    {
+                        <img src="@Model.Driver.ProfileImagePath" alt="Profile Image" class="driver-image" onerror="this.onerror=null; this.src='/images/profiles/default.png';"
+                        />
+                    }
+                    else
+                    {
+                        <img src="/images/profiles/default.png" alt="Profile Image" class="driver-image" />
+                    }
+                </div>
+                <div class="detail-content">
+                    <div class="detail-label">Driver</div>
+                    <a asp-action="Details" asp-controller="Drivers" asp-route-id="@Model.Driver.Id" class="detail-value driver-value">
+                        @(Model.Driver?.ContactName)
+                    </a>
+                </div>
             </div>
         </div>
+        <div class="detail-item comments-item">
+            <div class="detail-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                </svg>
+            </div>
+            <div class="detail-content">
+                <div class="detail-label">Comments</div>
+                <div class="detail-value comments-value">@(string.IsNullOrEmpty(Model.Comments) ? "Нет комментариев" : Model.Comments)</div>
+            </div>
+        </div>
+
+        <div class="trip-map-container">
+            <h3 class="title-map">Route</h3>
+            <div id="route-info" class="trip-details-page">
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 512 512">
+                            <path d="M512 96c0 50.2-59.1 125.1-84.6 155c-3.8 4.4-9.4 6.1-14.5 5L320 256c-17.7 0-32 14.3-32 32s14.3 32 32 32l96 0c53 0 96 43 96 96s-43 96-96 96l-276.4 0c8.7-9.9 19.3-22.6 30-36.8c6.3-8.4 12.8-17.6 19-27.2L416 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0c-53 0-96-43-96-96s43-96 96-96l39.8 0c-21-31.5-39.8-67.7-39.8-96c0-53 43-96 96-96s96 43 96 96zM117.1 489.1c-3.8 4.3-7.2 8.1-10.1 11.3l-1.8 2-.2-.2c-6 4.6-14.6 4-20-1.8C59.8 473 0 402.5 0 352c0-53 43-96 96-96s96 43 96 96c0 30-21.1 67-43.5 97.9c-10.7 14.7-21.7 28-30.8 38.5l-.6 .7zM128 352a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM416 128a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/>
+                        </svg>
+                    </div>
+                    <div class="detail-content">
+                        <div class="detail-label">Distance</div>
+                        <div id="distance" class="detail-value">Loading...</div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-hourglass-bottom" viewBox="0 0 16 16">
+                            <path d="M2 1.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1-.5-.5m2.5.5v1a3.5 3.5 0 0 0 1.989 3.158c.533.256 1.011.791 1.011 1.491v.702s.18.149.5.149.5-.15.5-.15v-.7c0-.701.478-1.236 1.011-1.492A3.5 3.5 0 0 0 11.5 3V2z"/>
+                        </svg>
+                    </div>
+                    <div class="detail-content">
+                        <div class="detail-label">Travel time</div>
+                        <div id="duration" class="detail-value">Loading...</div>
+                    </div>
+                </div>
+            </div>
+            <div id="map" class="map"></div>
+        </div>
+
     </div>
 </div>
 
-@if (ViewBag.IsOwner || ViewBag.IsModerator)
-{
-    <!-- Модальное окно подтверждения удаления -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Подтверждение удаления</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-                </div>
-                <div class="modal-body">
-                    Вы уверены, что хотите удалить эту поездку?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-danger">Удалить</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-}
+<script>
+    window.tripData = {
+        startLocation: '@Model.StartLocation',
+        endLocation: '@Model.EndLocation',
+    };
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=@Configuration["GoogleMaps:apiKey"]&callback=initMap" async defer></script>
+
+<script src="~/js/googleMaps.js"></script>
