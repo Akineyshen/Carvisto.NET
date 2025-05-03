@@ -1,63 +1,62 @@
-@* Views/Drivers/Index.cshtml *@
 @model IEnumerable<Carvisto.Models.ApplicationUser>
 
 @{
-    ViewData["Title"] = "Водители";
+    ViewData["Title"] = "Drivers";
     var currentFilter = ViewData["CurrentFilter"] as string;
 }
 
-<div class="container">
-    <h2 class="my-4">Водители</h2>
-
-    <!-- Добавляем форму поиска -->
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <form asp-action="Index" method="get" class="form-inline">
-                <div class="input-group w-100">
-                    <input type="text" name="searchString" value="@currentFilter" class="form-control"
-                           placeholder="Поиск по имени, телефону или email...">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search"></i> Поиск
-                        </button>
+<div class="search-container-drivers">
+    <div class="search-drivers">
+        <div class="search-panel">
+            <form asp-action="Index" method="get" class="search-fields">
+                <div class="search-fields-drivers">
+                    <input type="text" name="searchString" value="@currentFilter" class="search-field-drivers-input"
+                           placeholder="Search by Name, Phone, or Email...">
+                    <button type="submit" class="search-btn">Search</button>
                     </div>
-                </div>
-                @if (!string.IsNullOrEmpty(currentFilter))
-                {
-                    <div class="mt-2">
-                        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Сбросить фильтр</a>
-                    </div>
-                }
             </form>
         </div>
     </div>
 
     @if (!Model.Any())
     {
-        <div class="alert alert-info">
+        <div class="drivers-info">
             @if (!string.IsNullOrEmpty(currentFilter))
             {
-                <p>По вашему запросу "<strong>@currentFilter</strong>" ничего не найдено.</p>
+                <p class="text-info-drivers">Nothing was found for your query: <strong>@currentFilter</strong></p>
             }
             else
             {
-                <p>В системе нет водителей с поездками.</p>
+                <p>There are no drivers with trips in the system.</p>
             }
         </div>
     }
     else
     {
-        <div class="row">
+        <div class="column-gap-0">
             @foreach (var driver in Model)
             {
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">@driver.ContactName</h5>
-                            <p><i class="fas fa-phone"></i> @driver.ContactPhone</p>
-                            <p><i class="fas fa-envelope"></i> @driver.Email</p>
-                            <a asp-action="Details" asp-route-id="@driver.Id" class="btn btn-primary">Подробнее</a>
+                <div class="drivers-container">
+                    <div class="drivers-card">
+                        <div class="drivers-card-body">
+                            @if (!string.IsNullOrEmpty(driver.ProfileImagePath))
+                            {
+                                <img src="@driver.ProfileImagePath" alt="Profile Image" class="drivers-card-img" onerror="this.onerror=null; this.src='/images/driver_default.png';"
+                                />
+                            }
+                            else
+                            {
+                                <img src="/images/profiles/default.png" alt="Profile Image" class="drivers-card-img" />
+                            }
+                            <h5 class="drivers-title">@driver.ContactName</h5>
                         </div>
+                        <a asp-action="Details" asp-route-id="@driver.Id" class="view-button-drivers">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                            </svg>
+                            <span>View</span>
+                        </a>
                     </div>
                 </div>
             }

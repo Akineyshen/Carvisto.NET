@@ -2,47 +2,59 @@
 @{
     ViewData["Title"] = "Edit Trip";
 }
-<div class="edit-trip-form">
+<div class="create-trip-container">
     <div class="create-trip-card">
-        <h2 class="auth-title">Edit Trip</h2>
+        <div class="create-trip-header">
+            <h2 class="create-trip-title">Edit Trip</h2>
+        </div>
         
-        <form asp-action="Edit" method="post" class="auth-form trip-form">
+        <form asp-action="Edit" method="post" class="create-trip-form">
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+            
             <input type="hidden" asp-for="Id"/>
             <input type="hidden" asp-for="DriverId"/>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="StartLocation" class="form-label">From</label>
-                <input asp-for="StartLocation" class="form-input"/>
-                <span asp-validation-for="StartLocation" class="text-danger"></span>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="StartLocation" class="form-label">From</label>
+                    <input asp-for="StartLocation" class="form-input" placeholder="Enter departure city"/>
+                    <span asp-validation-for="StartLocation" class="validation-message"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EndLocation" class="form-label">To</label>
+                    <input asp-for="EndLocation" class="form-input" placeholder="Enter arrival city" />
+                    <span asp-validation-for="EndLocation" class="validation-message"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="EndLocation" class="form-label">To</label>
-                <input asp-for="EndLocation" class="form-input"/>
-                <span asp-validation-for="EndLocation" class="text-danger"></span>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="DepartureDateTime" class="form-label">Departure Date and Time</label>
+                    <input asp-for="DepartureDateTime" class="form-input" type="datetime-local"/>
+                    <span asp-validation-for="DepartureDateTime" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Price" class="form-label">Price per seat</label>
+                    <input asp-for="Price" class="form-input" placeholder="Enter price in PLN" />
+                    <span asp-validation-for="Price" class="validation-message"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="DepartureDateTime" class="form-label">Departure Date</label>
-                <input asp-for="DepartureDateTime" class="form-input" type="date"/>
-                <span asp-validation-for="DepartureDateTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="form-label">Price per seat</label>
-                <input asp-for="Price" class="form-input"/>
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="VehicleBrand" class="form-label">Vehicle</label>
                 <input asp-for="VehicleBrand" class="form-input" placeholder="Enter vehicle brand">
-                <span asp-validation-for="VehicleBrand" class="text-danger"></span>
+                <span asp-validation-for="VehicleBrand" class="validation-message"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Comments" class="form-label">Additional Information</label>
-                <textarea asp-for="Comments" class="form-input" rows="3"></textarea>
-                <span asp-validation-for="Comments" class="text-danger"></span>
+                <textarea asp-for="Comments" class="form-input trip-textarea" placeholder="Add any notes or requirements for passengers"></textarea>
+                <span asp-validation-for="Comments" class="validation-message"></span>
             </div>
-            
+
             <div class="form-actions">
-                <button type="submit" class="auth-button">Update Trip</button>
+                <button type="submit" class="create-button">Update Trip</button>
             </div>
         </form>
     </div>

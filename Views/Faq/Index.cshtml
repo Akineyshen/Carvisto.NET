@@ -1,16 +1,208 @@
 @{
-    ViewBag.Title = "Info";
+    ViewBag.Title = "FAQ";
 }
 
-<h1>Добро пожаловать на мою простую страницу</h1>
+<div class="faq-container">
+    <div class="faq-header">
+        <h2 class="page-title">Frequently Asked Questions</h2>
+        <p class="faq-subtitle">Find answers to common questions about carpooling with Carvisto</p>
+    </div>
 
-<p>Это пример простой страницы с текстом и изображением в ASP.NET MVC.</p>
+    <div class="faq-card">
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+                <h3>What is carpooling?</h3>
+                <div class="faq-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="faq-answer">
+                <p>Carpooling is a shared transportation arrangement where multiple people travel together in one vehicle.
+                    The driver offers empty seats in their car to passengers traveling in the same direction, sharing the costs of the journey.
+                    This practice reduces traffic congestion, lowers transportation costs, and helps reduce environmental impact.</p>
+                <p>ㅤ</p>
+            </div>
+        </div>
 
-<div>
-    <p>Подпись к изображению</p>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+                <h3>How does Carvisto work?</h3>
+                <div class="faq-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="faq-answer">
+                <p>Carvisto connects drivers with empty seats to passengers traveling in the same direction.
+                    Drivers can create trips by specifying their route, departure time, vehicle details, and price per seat.
+                    Passengers can search for available trips, view driver profiles, and book seats.
+                    The platform facilitates the entire process from finding a ride to completing the journey.</p>
+                <p>ㅤ</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+                <h3>How do I create a trip as a driver?</h3>
+                <div class="faq-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="faq-answer">
+                <p>To create a trip as a driver:</p>
+                <ol>
+                    <li>Log in to your Carvisto account</li>
+                    <li>Navigate to "My Account" and click "Create New Trip"</li>
+                    <li>Fill in the required details: departure and arrival locations, date and time, price per seat, and vehicle information</li>
+                    <li>Add any additional information or requirements for passengers</li>
+                    <li>Click "Create Trip" to publish your journey</li>
+                </ol>
+                <p>Your trip will then be visible to potential passengers searching for rides on that route.</p>
+                <p>ㅤ</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+                <h3>How do I book a trip as a passenger?</h3>
+                <div class="faq-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="faq-answer">
+                <p>To book a trip as a passenger:</p>
+                <ol>
+                    <li>Search for available trips by entering your departure and destination locations</li>
+                    <li>Browse the list of available trips matching your criteria</li>
+                    <li>Click on a trip to view its details and the driver's profile</li>
+                    <li>Click the "Book" button to reserve your seat</li>
+                    <li>Confirm your booking and complete any required payment</li>
+                </ol>
+                <p>Once booked, you'll receive the driver's contact information and trip details.</p>
+                <p>ㅤ</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+                <h3>How is the price determined?</h3>
+                <div class="faq-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="faq-answer">
+                <p>Prices are set by drivers based on factors such as:</p>
+                <ul>
+                    <li>Distance of the journey</li>
+                    <li>Fuel costs</li>
+                    <li>Toll fees</li>
+                    <li>Vehicle maintenance</li>
+                </ul>
+                <p>Carvisto encourages fair pricing that makes carpooling beneficial for both drivers and passengers.
+                    The goal is to share travel costs, not to generate profit.As a guideline, prices typically cover
+                    the driver's expenses while offering passengers a more affordable alternative to other transportation options.</p>
+                <p>ㅤ</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+                <h3>Is carpooling safe?</h3>
+                <div class="faq-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="faq-answer">
+                <p>Carvisto prioritizes safety through several measures:</p>
+                <ul>
+                    <li>User verification and profile reviews</li>
+                    <li>Rating system for both drivers and passengers</li>
+                    <li>Ability to view driver profiles and vehicle information before booking</li>
+                    <li>Secure messaging system within the platform</li>
+                </ul>
+                <p>We recommend users to check ratings and reviews, communicate clearly about meeting points,
+                    and share trip details with a trusted contact before departure. Always trust your instincts and
+                    cancel if you feel uncomfortable with any arrangement.</p>
+                <p>ㅤ</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+                <h3>What are the benefits of carpooling?</h3>
+                <div class="faq-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="faq-answer">
+                <p>Carpooling offers numerous benefits:</p>
+                <ul>
+                    <li><strong>Cost savings:</strong> Share fuel, toll, and parking costs</li>
+                    <li><strong>Environmental impact:</strong> Reduce carbon emissions by having fewer cars on the road</li>
+                    <li><strong>Reduced traffic:</strong> Help decrease congestion during peak hours</li>
+                    <li><strong>Social interaction:</strong> Meet new people and make connections</li>
+                    <li><strong>Reduced stress:</strong> Share driving responsibilities on long journeys</li>
+                    <li><strong>Access to HOV lanes:</strong> In many areas, carpooling vehicles can use dedicated lanes</li>
+                </ul>
+                <p>ㅤ</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+                <h3>Can I cancel my trip or booking?</h3>
+                <div class="faq-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="faq-answer">
+                <p>Yes, both drivers and passengers can cancel trips, but we encourage responsible use of this feature:</p>
+                <p><strong>For drivers:</strong></p>
+                <ul>
+                    <li>You can cancel a trip through your account dashboard</li>
+                    <li>All passengers will be notified automatically</li>
+                    <li>Frequent cancellations may affect your driver rating</li>
+                </ul>
+                <p><strong>For passengers:</strong></p>
+                <ul>
+                    <li>You can cancel your booking through your account dashboard</li>
+                    <li>The driver will be notified of your cancellation</li>
+                    <li>Last-minute cancellations may affect your passenger rating</li>
+                </ul>
+                <p>We recommend cancelling as early as possible to allow drivers and passengers to make alternative arrangements.</p>
+                <p>ㅤ</p>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div>
-    <h2>Дополнительный текст</h2>
-    <p>Еще немного текста для демонстрации.</p>
-</div>
+<script>
+    function toggleAnswer(element) {
+        const item = element.parentElement;
+        const answer = item.querySelector('.faq-answer');
+        const icon = item.querySelector('.faq-icon svg');
+        
+        if (answer.style.maxHeight) {
+            answer.style.maxHeight = null;
+            icon.innerHTML = '<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>';
+        } else {
+            answer.style.maxHeight = answer.scrollHeight + "px";
+            icon.innerHTML = '<path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>';
+        }
+    }
+</script>

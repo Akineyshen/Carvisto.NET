@@ -68,7 +68,6 @@ namespace Carvisto.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ProfileImagePath")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SecurityStamp")

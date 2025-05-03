@@ -23,6 +23,12 @@
       <_ContentIncludedByDefault Remove="wwwroot\css\utilities\animations.css" />
       <_ContentIncludedByDefault Remove="wwwroot\css\utilities\variables.css" />
       <_ContentIncludedByDefault Remove="wwwroot\images\profile\208b11bd-6840-4ac2-8222-8d547f11ad4c_a6890970-988d-4015-acba-84054d87388f.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\components\_buttons.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\components\_cardTrips.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\components\_header.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\pages\createTrip.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\pages\faq.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\pages\home.css" />
     </ItemGroup>
 
 </Project>
