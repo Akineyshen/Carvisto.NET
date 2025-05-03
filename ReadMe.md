@@ -2,20 +2,22 @@
 ![Language](https://img.shields.io/badge/Language-C%23-brightgreen?style=for-the-badge&logo=sharp&logoColor=813787&color=813787&labelColor=FCFCFC)
 ![Framework](https://img.shields.io/badge/Framework-.NET-brightgreen?style=for-the-badge&logo=dotnet&logoColor=813787&color=813787&labelColor=FCFCFC)
 ![Size](https://img.shields.io/github/repo-size/Akineyshen/Carvisto.NET?label=Size&style=for-the-badge&color=813787&labelColor=FCFCFC)
-![Last Commit](https://img.shields.io/github/last-commit/Akineyshen/TetrisJavaFX?label=Last%20Commit&style=for-the-badge&color=813787&labelColor=FCFCFC)
+![Last Commit](https://img.shields.io/github/last-commit/Akineyshen/Carvisto.NET?label=Last%20Commit&style=for-the-badge&color=813787&labelColor=FCFCFC)
 
 ## Features
 ### Core Functionality
 - **User Authentication**: User registration, login, and profile management.
 - **Trip Creation**: Drivers can publish trips by specifying route, date, and price.
 - **Trip Search**: Passengers can search for available trips by route, date, and cost.
+- **Driver Search:** Passengers can find drivers by phone number, name, or email.
 - **Reviews and Comments**: Users can leave reviews and comments after a completed trip.
+- **Password Change:** Users can securely update their password in the account settings.
+- **Booking trip:** Passengers can book seats on the selected trip with confirmation of the reservation.
 
 ### Advanced Features
 - **PDF Documents**: Automatic generation of trip agreements in PDF format.
 - **User Ratings**: Rating system based on user feedback.
 - **Interactive Map**: Visual representation of trip routes using Google Maps API.
-- **Admin Panel**: Manage users, trips, and reviews through an administrative interface.
 
 ## Requirements
 - .NET 6.0 or later
