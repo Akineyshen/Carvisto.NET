@@ -80,8 +80,7 @@
     transition: background-color 0.2s;
     gap: 5px;
     justify-content: center;
-    margin-bottom: 1rem;
-    max-width: 6rem;
+    margin-right: 2rem;
 }
 
 .view-button-account {
