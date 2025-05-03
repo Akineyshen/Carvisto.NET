@@ -1,0 +1,415 @@
+/* Button styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-sm {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+.btn-info {
+    background-color: var(--text-dark);
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: var(--text-dark);
+}
+
+.btn-success {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: var(--secondary-hover);
+}
+
+.btn-action {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+/* View Button */
+.view-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: none;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.view-button:hover {
+    background-color: var(--secondary-hover);
+}
+
+.view-button-drivers {
+    display: flex;
+    align-items: center;
+    background-color: var(--secondary-color);
+    padding: 0.5rem 1rem;
+    color: white;
+    border-radius: 20px;
+    border: none;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.2s;
+    gap: 5px;
+    justify-content: center;
+    margin-bottom: 1rem;
+    max-width: 6rem;
+}
+
+.view-button-account {
+    display: flex;
+    padding: 12px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+    align-items: center;
+    background-color: var(--secondary-color);
+    color: white;
+    align-self: center;
+}
+
+.view-button-account:hover {
+    background-color: var(--secondary-hover);
+}
+
+/* Create Trip Button */
+.create-trip-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.create-trip-btn {
+    background-color: #0DC255;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 400;
+    margin-right: 20px;
+    transition: background-color 0.3s;
+}
+
+.create-trip-btn:hover {
+    transition: background-color 0.3s;
+    background-color: #0A8F3F;
+}
+
+.create-trip-button:hover {
+    background-color: var(--primary-hover);
+}
+
+.create-trip-btn2 {
+    position: absolute;
+    left: 20px;
+    background-color: white;
+    color: #333;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 300;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.create-trip-btn2 .plus {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-color: #4caf50;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    margin-right: 10px;
+}
+
+.create-button {
+    font-family: Poppins, sans-serif;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.create-button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Delete Button */
+.delete-button-trip {
+    font-family: Poppins, sans-serif;
+    background-color: var(--error-color);
+    color: white;
+    display: block;
+    padding: 12px 22px;
+    border-radius: 10px;
+    border: none;
+    text-decoration: none;
+    font-size: 16px;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-button-trip:hover {
+    background-color: var(--error-hover);
+}
+
+.delete-button {
+    background-color: var(--error-color);
+    color: white;
+    display: flex;
+    padding: 12px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+    align-items: center;
+}
+
+.delete-button:hover {
+    background-color: var(--error-hover);
+}
+
+.delete-button-image {
+    background-color: var(--error-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 14px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.delete-button-image:hover {
+    background-color: var(--error-hover);
+}
+
+.btn-delete {
+    background-color: var(--error-color);
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: var(--error-hover);
+}
+
+/* Back Button */
+.back-profile-btn {
+    padding: 12px 22px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.back-profile-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-back {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    background-color: var(--secondary-color);
+}
+
+.btn-back span {
+    font-size: 1rem;
+}
+
+.btn-back:hover {
+    background-color: var(--secondary-hover);
+}
+
+/* Login Button */
+.login-btn {
+    border: 2px solid #006aff;
+    border-radius: 20px;
+    padding: 8px 30px;
+    text-decoration: none;
+    color: #006aff;
+    font-weight: 400;
+}
+
+.login-btn:hover {
+    transition: background-color 0.3s;
+    background-color: rgba(0, 85, 204, 0.27);
+}
+
+.auth-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+.auth-button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Edit Button */
+.edit-button {
+    background-color: var(--primary-color);
+    color: white;
+    align-self: center;
+    display: flex;
+    padding: 12px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+    align-items: center;
+}
+
+.edit-button:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-edit {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Logout Button */
+.logout-button {
+    display: flex;
+    gap: 10px;
+    background-color: var(--text-light);
+    color: var(--error-color);
+    padding: 10px 40px;
+    border: 1px solid var(--error-color);
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    color: white;
+    background-color: var(--error-color);
+}
+
+/* Upload Button */
+.upload-button-image {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 14px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.upload-button-image:hover {
+    background-color: var(--secondary-hover);
+}
+
+/* Search Button */
+.search-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Swap Button */
+.swap-btn {
+    border: 1px solid #e0e0e0;
+    background-color: white;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 5px;
+}
+
+.swap-btn:hover {
+    background: #e0e0e0;
+    transform: rotate(180deg);
+}
+
+.swap-btn svg {
+    width: 20px;
+    height: 20px;
+    color: #555;
+}

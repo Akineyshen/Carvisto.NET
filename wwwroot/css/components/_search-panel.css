@@ -1,0 +1,73 @@
+/* Search panel styles */
+.search-panel {
+    background: white;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px;
+    position: relative;
+    margin: 0 auto;
+}
+
+.search-fields {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.search-field input {
+    width: 16rem;
+    padding: 12px 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 15px;
+    font-size: 16px;
+}
+
+.search-container-drivers {
+    max-width: 100%;
+    width: 1200px;
+    margin: 120px auto;
+}
+
+.search-form-drivers {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-fields-drivers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+}
+
+.search-field-drivers-input {
+    width: 830px;
+    padding: 12px 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 15px;
+    font-size: 16px;
+}
+
+.search-drivers {
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+    margin-bottom: 40px;
+}
+
+.search-trip {
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+    margin-bottom: 40px;
+}
+
+.create-trip-button-home {
+    width: 100%;
+    max-width: 1040px;
+    position: relative;
+    margin-top: 30px;
+}

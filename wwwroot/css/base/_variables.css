@@ -1,0 +1,15 @@
+/* Color variables */
+:root {
+    --primary-color: #4a6bff;
+    --primary-hover: #3a5bef;
+    --primary-bg: #e6ebff;
+    --secondary-color: #0DC255;
+    --secondary-hover: #0A8F3F;
+    --text-dark: #555;
+    --text-light: #ffffff;
+    --light-gray: #f8f9fa;
+    --border-color: #e0e0e0;
+    --card-bg: #fff;
+    --error-color: #ff4a6b;
+    --error-hover: #ef3a5b;
+}

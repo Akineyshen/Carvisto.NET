@@ -1,0 +1,30 @@
+/* Main CSS file that imports all other CSS files */
+
+/* Base styles */
+@import "base/_variables.css";
+@import "base/_reset.css";
+@import "base/_typography.css";
+
+/* Layout styles */
+@import "layouts/_container.css";
+@import "layouts/_auth.css";
+@import "layouts/_hero.css";
+
+/* Component styles */
+@import "components/_header.css";
+@import "components/_buttons.css";
+@import "components/_cards.css";
+@import "components/_forms.css";
+@import "components/_search-panel.css";
+@import "components/_trip-cards.css";
+
+/* Page styles */
+@import "pages/_create-trip.css";
+@import "pages/_delete-trip.css";
+@import "pages/_driver-details.css";
+@import "pages/_drivers.css";
+@import "pages/_edit-trip.css";
+@import "pages/_faq.css";
+@import "pages/_home.css";
+@import "pages/_my-account.css";
+@import "pages/_trip-details.css";

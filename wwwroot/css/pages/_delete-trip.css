@@ -1,0 +1,27 @@
+/* Delete trip page styles */
+.delete-trip-form {
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    max-width: 1000px;
+    width: 100%;
+    margin: 313px auto;
+}
+
+.delete-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: var(--text-dark);
+    text-align: center;
+}
+
+.delete-button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    max-width: 250px;
+    width: 100%;
+    margin: 0 auto;
+}

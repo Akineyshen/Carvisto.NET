@@ -1,0 +1,69 @@
+/* My account page styles */
+.settings-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: var(--text-dark);
+}
+
+.settings-subtitle {
+    color: #6c757d;
+    margin-bottom: 40px;
+    font-size: 16px;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.trip-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.add-trip-btn {
+    text-align: center;
+    color: white;
+}
+
+.my-trip-header {
+    text-align: center;
+    color: var(--text-dark);
+    font-size: 32px;
+}
+
+.trip-actions {
+    margin-top: 15px;
+    align-self: flex-end;
+}
+
+/* Logout Button */
+.logout-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+    margin-bottom: 40px;
+}
+
+.profile-image-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.profile-image-container {
+    padding: 30px;
+}

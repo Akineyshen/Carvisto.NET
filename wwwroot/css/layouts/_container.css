@@ -1,0 +1,66 @@
+/* Container layout styles */
+.driver-container {
+    max-width: 1200px;
+    margin: 8rem auto;
+    padding: 0 1rem;
+}
+
+.trip-details-container {
+    max-width: 1000px;
+    margin: 8rem auto;
+    padding: 0 1rem;
+}
+
+.drivers-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.trips-container {
+    padding: 10px 0;
+}
+
+.settings-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px 20px 0px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    gap: 20px;
+}
+
+.create-trip-container {
+    max-width: 800px;
+    margin: 10rem auto;
+    padding: 0 1rem;
+}
+
+.faq-container {
+    max-width: 1000px;
+    margin: 8rem auto;
+    padding: 0 1rem;
+}
+
+.trips-page {
+    max-width: 1200px;
+    margin: 8rem auto;
+    padding: 0 1rem;
+}
+
+.new-trips-section {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.trips-section {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.trip-map-container {
+    margin: 2rem auto;
+}

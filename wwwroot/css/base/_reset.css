@@ -1,0 +1,28 @@
+/* Reset styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif !important;
+    margin: 0;
+    padding: 0;
+    background: #f5f7fa;
+    color: var(--text-dark);
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Container utility */
+.container {
+    margin-top: 100px;
+}
+
+.mt-4 {
+    margin-top: 2rem;
+}
