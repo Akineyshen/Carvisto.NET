@@ -10,10 +10,14 @@ namespace Carvisto.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
+        private readonly IBookingService _bookingService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(
+            IAccountService accountService,
+            IBookingService bookingService)
         {
             _accountService = accountService;
+            _bookingService = bookingService;
         }
 
         [HttpGet]
@@ -290,6 +294,14 @@ namespace Carvisto.Controllers
                 TempData["ProfileImageError"] = $"Error deleting image: {ex.Message}";
             }
             
+            return RedirectToAction("Index", "Account");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Bookings()
+        {
+            var user = await _accountService.GetCurrentUserAsync();
+            var bookings = await _bookingService.GetUserBookingASync(user.Id);
             return RedirectToAction("Index", "Account");
         }
     }

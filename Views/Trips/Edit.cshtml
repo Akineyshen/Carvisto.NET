@@ -48,6 +48,12 @@
             </div>
 
             <div class="form-group">
+                <label asp-for="Seats" class="control-label"></label>
+                <input asp-for="Seats" class="form-control" min="1" max="10" />
+                <span asp-validation-for="Seats" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <label asp-for="Comments" class="form-label">Additional Information</label>
                 <textarea asp-for="Comments" class="form-input trip-textarea" placeholder="Add any notes or requirements for passengers"></textarea>
                 <span asp-validation-for="Comments" class="validation-message"></span>

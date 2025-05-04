@@ -28,23 +28,29 @@ namespace Carvisto.Services
         {
             return await _context.Trips
                 .Include(t => t.Driver)
+                .Include(t => t.Bookings)
                 .FirstOrDefaultAsync(t => t.Id == id) ?? throw new InvalidOperationException("Trip not found");
         }
         
         // Create new trip
         public async Task CreateTripAsync(Trip trip)
         {
-            _context.Trips.Add(trip);
+            trip.AvailableSeats = trip.Seats;
+            _context.Add(trip);
             await _context.SaveChangesAsync();
         }
 
         // Update existing trip
         public async Task UpdateTripAsync(Trip trip)
         {
-            var existingTrip = await _context.Trips.FindAsync(trip.Id);
-            if (existingTrip != null)
+            var existingTrip = await _context.Trips
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == trip.Id);
+            
+            if (existingTrip.Seats != trip.Seats)
             {
-                _context.Entry(existingTrip).State = EntityState.Detached;
+                int bookedSeats = existingTrip.Seats - existingTrip.AvailableSeats;
+                trip.AvailableSeats = Math.Max(0, trip.Seats - bookedSeats);
             }
             
             _context.Update(trip);
@@ -71,6 +77,31 @@ namespace Carvisto.Services
         public IQueryable<Trip> GetTripsQuery()
         {
             return _context.Trips.Include(t => t.Driver);
+        }
+        
+        public async Task<IEnumerable<Trip>> GetAvailableTripsAsync(string startLocation = null, string endLocation = null, DateTime? departureDate = null)
+        {
+            var query = _context.Trips
+                .Include(t => t.Driver)
+                .Where(t => t.AvailableSeats > 0);
+
+            if (!string.IsNullOrEmpty(startLocation))
+            {
+                query = query.Where(t => t.StartLocation.Contains(startLocation));
+            }
+
+            if (!string.IsNullOrEmpty(endLocation))
+            {
+                query = query.Where(t => t.EndLocation.Contains(endLocation));
+            }
+
+            if (departureDate.HasValue)
+            {
+                var date = departureDate.Value.Date;
+                query = query.Where(t => t.DepartureDateTime.Date == date);
+            }
+            
+            return await query.ToListAsync();
         }
     }
 }

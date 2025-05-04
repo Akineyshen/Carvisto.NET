@@ -27,7 +27,6 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 20px 20px 0px;
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
@@ -65,5 +64,5 @@
 }
 
 .trip-map-container {
-    margin: 2rem auto;
+    margin: 3rem auto;
 }

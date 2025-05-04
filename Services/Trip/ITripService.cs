@@ -11,6 +11,7 @@ namespace Carvisto.Services
         Task DeleteTripAsync(int id);
         bool TripExists(int id);
         IQueryable<Trip> GetTripsQuery();
+        Task<IEnumerable<Trip>> GetAvailableTripsAsync(string startLocation = null, string endLocation = null, DateTime? departureDate = null);
     }
 }
 

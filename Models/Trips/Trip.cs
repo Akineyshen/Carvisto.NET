@@ -9,16 +9,16 @@ namespace Carvisto.Models
         [Key]
         public int Id { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "You must specify the start location")]
         public string StartLocation { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "You must specify the end location")]
         public string EndLocation { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "You must specify the departure date and time")]
         public DateTime DepartureDateTime { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "You must specify the price")]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal Price { get; set; }
         
@@ -27,10 +27,17 @@ namespace Carvisto.Models
         
         public string Comments { get; set; }
         
-        
         [ForeignKey("Driver")]
         public string DriverId { get; set; }
         public ApplicationUser? Driver { get; set; }
+        
+        [Required(ErrorMessage = "The number of seats is mandatory")]
+        [Range(1, 10, ErrorMessage = "The number of seats must be between 1 and 10")]
+        public int Seats { get; set; }
+        
+        public int AvailableSeats { get; set; }
+
+        public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
     }
 }
 

@@ -107,9 +107,7 @@
 
 /* Settings card */
 .settings-card {
-    max-width: 1120px;
-    margin: 40px auto;
-    padding: 40px;
+    max-width: 1200px;
 }
 
 .settings-card-image {
@@ -138,4 +136,9 @@
     border-radius: 20px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
     padding: 25px;
+}
+
+.card-booking {
+    display: flex;
+    justify-content: right;
 }

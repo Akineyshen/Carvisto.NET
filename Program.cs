@@ -23,7 +23,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITripService, TripService>();
 builder.Services.AddScoped<IGoogleMapsService, GoogleMapsService>();
 builder.Services.AddHttpClient<IGoogleMapsService, GoogleMapsService>();
-
+builder.Services.AddScoped<IBookingService, BookingService>();
 
 var app = builder.Build();
 

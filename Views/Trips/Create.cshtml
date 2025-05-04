@@ -41,13 +41,21 @@
                     <span asp-validation-for="Price" class="validation-message"></span>
                 </div>
             </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="VehicleBrand" class="form-label">Vehicle</label>
+                    <input asp-for="VehicleBrand" class="form-input" placeholder="Enter vehicle brand">
+                    <span asp-validation-for="VehicleBrand" class="validation-message"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="VehicleBrand" class="form-label">Vehicle</label>
-                <input asp-for="VehicleBrand" class="form-input" placeholder="Enter vehicle brand">
-                <span asp-validation-for="VehicleBrand" class="validation-message"></span>
+                <div class="form-group">
+                    <label asp-for="Seats" class="form-label"></label>
+                    <input asp-for="Seats" class="form-input" min="1" max="10" placeholder="Enter the number of seats"/>
+                    <span asp-validation-for="Seats" class="validation-message"></span>
+                </div>
             </div>
-
+            
             <div class="form-group">
                 <label asp-for="Comments" class="form-label">Additional Information</label>
                 <textarea asp-for="Comments" class="form-input trip-textarea" placeholder="Add any notes or requirements for passengers"></textarea>

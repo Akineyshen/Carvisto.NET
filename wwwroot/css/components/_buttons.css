@@ -412,3 +412,42 @@
     height: 20px;
     color: #555;
 }
+
+/* Booking Button */
+.btn-booking {
+    display: flex;
+    background-color: var(--secondary-color);
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-booking:hover {
+    background-color: var(--secondary-hover);
+}
+
+.btn-booking-cancel {
+    display: flex;
+    background-color: var(--error-color);
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-booking-cancel:hover {
+    background-color: var(--error-hover);
+}

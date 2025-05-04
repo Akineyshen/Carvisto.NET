@@ -205,25 +205,37 @@ namespace Carvisto.Controllers
             {
                 var trip = await _tripService.GetTripByIdAsync(id);
 
-                if (User.Identity.IsAuthenticated)
+                var viewModel = new TripDetailsViewModel
                 {
-                    ViewBag.IsOwner = trip.DriverId == User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    ViewBag.IsModerator = User.IsInRole("Moderator");
+                    Trip = trip,
+                    IsAuthenticated = User.Identity.IsAuthenticated,
+                };
+
+                if (viewModel.IsAuthenticated)
+                {
+                    string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    viewModel.IsDriver = trip.DriverId == userId;
+                    viewModel.IsModerator = User.IsInRole("Moderator");
+                    
+                    var userBooking = trip.Bookings?
+                        .FirstOrDefault(b => b.UserId == userId && !b.IsCancelled);
+                    viewModel.HasActivateBooking = userBooking != null;
+                    viewModel.ActiveBookingId = userBooking?.Id;
                 }
                 else
                 {
-                    ViewBag.IsOwner = false;
-                    ViewBag.IsModerator = false;
+                    viewModel.IsDriver = false;
+                    viewModel.IsModerator = false;
                 }
                 
                 var routeInfo = await _mapsService.GetRouteInfoAsync(
                     trip.StartLocation, 
                     trip.EndLocation);
                 
-                ViewBag.RouteDistance = routeInfo.Distance;
-                ViewBag.RouteDuration = routeInfo.Duration;
+                viewModel.RouteDistance = routeInfo.Distance;
+                viewModel.RouteDuration = routeInfo.Duration;
 
-                return View(trip);
+                return View(viewModel);
             }
             catch (InvalidOperationException)
             {
