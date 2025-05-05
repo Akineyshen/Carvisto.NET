@@ -4,6 +4,7 @@ namespace Carvisto.Services
 {
     public interface ITripService
     {
+        Task<List<Trip>> GetUserTripsAsync(string userId);
         Task<IEnumerable<Trip>> GetAllTripsAsync();
         Task<Trip> GetTripByIdAsync(int id);
         Task CreateTripAsync(Trip trip);

@@ -103,5 +103,14 @@ namespace Carvisto.Services
             
             return await query.ToListAsync();
         }
+
+        public async Task<List<Trip>> GetUserTripsAsync(string userId)
+        {
+            return await _context.Trips
+                .Where(t => t.DriverId == userId)
+                .Include(t => t.Driver)
+                .OrderByDescending(t => t.DepartureDateTime)
+                .ToListAsync();
+        }
     }
 }
