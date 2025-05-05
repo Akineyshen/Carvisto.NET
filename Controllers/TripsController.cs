@@ -13,16 +13,19 @@ namespace Carvisto.Controllers
         private readonly ITripService _tripService; // Service for working with trips
         private readonly UserManager<ApplicationUser> _userManager; // User Manager
         private readonly IGoogleMapsService _mapsService; // Google Maps service
+        private readonly IBookingService _bookingService; // Service for working with bookings
 
         // DI constructor
         public TripsController(
             ITripService tripService,
             UserManager<ApplicationUser> userManager,
-            IGoogleMapsService mapsService)
+            IGoogleMapsService mapsService,
+            IBookingService bookingService)
         {
             _tripService = tripService;
             _userManager = userManager;
             _mapsService = mapsService;
+            _bookingService = bookingService;
         }
 
         // GET: List of all trips
@@ -201,50 +204,45 @@ namespace Carvisto.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            try
-            {
-                var trip = await _tripService.GetTripByIdAsync(id);
+            var trip = await _tripService.GetTripByIdAsync(id);
 
-                var viewModel = new TripDetailsViewModel
-                {
-                    Trip = trip,
-                    IsAuthenticated = User.Identity.IsAuthenticated,
-                };
-
-                if (viewModel.IsAuthenticated)
-                {
-                    string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    viewModel.IsDriver = trip.DriverId == userId;
-                    viewModel.IsModerator = User.IsInRole("Moderator");
-                    
-                    var userBooking = trip.Bookings?
-                        .FirstOrDefault(b => b.UserId == userId && !b.IsCancelled);
-                    viewModel.HasActivateBooking = userBooking != null;
-                    viewModel.ActiveBookingId = userBooking?.Id;
-                }
-                else
-                {
-                    viewModel.IsDriver = false;
-                    viewModel.IsModerator = false;
-                }
-                
-                var routeInfo = await _mapsService.GetRouteInfoAsync(
-                    trip.StartLocation, 
-                    trip.EndLocation);
-                
-                viewModel.RouteDistance = routeInfo.Distance;
-                viewModel.RouteDuration = routeInfo.Duration;
-
-                return View(viewModel);
-            }
-            catch (InvalidOperationException)
+            if (trip == null)
             {
                 return NotFound();
             }
-            catch (Exception ex)
+
+            var viewModel = new TripDetailsViewModel 
             {
-                return RedirectToAction("Index", "Home");
+                Trip = trip,
+                IsAuthenticated = User.Identity.IsAuthenticated,
+                IsModerator = User.IsInRole("Moderator"),
+                IsDriver = false,
+                HasActivateBooking = false
+            };
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                viewModel.IsDriver = trip.DriverId == user.Id;
+                viewModel.IsModerator = User.IsInRole("Moderator");
+                    
+                var activeBooking = await _bookingService
+                    .GetUserActiveBookingAsync(id, user.Id);
+                viewModel.HasActivateBooking = activeBooking != null;
+                if (activeBooking != null)
+                {
+                    viewModel.ActiveBookingId = activeBooking.Id;
+                }
             }
+                
+            var routeInfo = await _mapsService.GetRouteInfoAsync(
+                    trip.StartLocation, 
+                trip.EndLocation);
+                
+            viewModel.RouteDistance = routeInfo.Distance;
+            viewModel.RouteDuration = routeInfo.Duration;
+
+            return View(viewModel);
         }
     }
 }

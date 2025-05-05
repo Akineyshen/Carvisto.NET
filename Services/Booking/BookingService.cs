@@ -21,6 +21,7 @@ namespace Carvisto.Services
         {
             return await _context.Bookings
                 .Include(b => b.Trip)
+                .ThenInclude(t => t.Driver)
                 .Where(b => b.UserId == userId)
                 .OrderByDescending(b => b.BookingDate)
                 .ToListAsync();
@@ -33,85 +34,80 @@ namespace Carvisto.Services
                 .FirstOrDefaultAsync(b => b.Id == id) ?? throw new InvalidOperationException();
         }
 
+        public async Task<Booking> GetUserActiveBookingAsync(int tripId, string userId)
+        {
+            if (string.IsNullOrEmpty(userId) || tripId <= 0)
+            {
+                return null;
+            }
+
+            return await _context.Bookings
+                .FirstOrDefaultAsync(b => b.TripId == tripId && b.UserId == userId && !b.IsCancelled);
+        }
+
         public async Task<bool> CreateBookingAsync(int tripId, string userId)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
-            try
+            var existingBooking = await GetUserActiveBookingAsync(tripId, userId);
+            
+            var cancelledBooking = await _context.Bookings
+                .FirstOrDefaultAsync(b => b.TripId == tripId && b.UserId == userId && b.IsCancelled);
+            
+            if (existingBooking != null)
             {
-                // Get a ride with a lock for updating
-                var trip = await _context.Trips
-                    .FirstOrDefaultAsync(t => t.Id == tripId);
+                return false;
+            }
+            
+            var trip = await _context.Trips.FindAsync(tripId);
+            if (trip == null || trip.AvailableSeats <= 0 || trip.DepartureDateTime < DateTime.Now)
+            {
+                return false;
+            }
 
-                if (trip == null || trip.AvailableSeats <= 0)
-                {
-                    return false;
-                }
+            if (cancelledBooking != null)
+            {
+                cancelledBooking.IsCancelled = false;
+                cancelledBooking.BookingDate = DateTime.Now;
                 
-                // Check if the user has already booked this trip
-                bool alreadyBooked = await _context.Bookings
-                    .AnyAsync(b => b.TripId == tripId && b.UserId == userId && !b.IsCancelled);
-
-                if (alreadyBooked)
-                {
-                    return false;
-                }
-                
-                // Create a new booking
-                var booking = new Booking
-                {
-                    TripId = tripId,
-                    UserId = userId,
-                    BookingDate = DateTime.UtcNow
-                };
-                
-                _context.Bookings.Add(booking);
-                
-                // Reducing the number of available seats
                 trip.AvailableSeats -= 1;
                 
                 await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-                
                 return true;
             }
-            catch
+
+            var booking = new Booking
             {
-                await transaction.RollbackAsync();
-                return false;
-            }
+                TripId = tripId,
+                UserId = userId,
+                BookingDate = DateTime.Now,
+                IsCancelled = false
+            };
+            
+            trip.AvailableSeats -= 1;
+            
+            _context.Bookings.Add(booking);
+            await _context.SaveChangesAsync();
+            
+            return true;
         }
 
         public async Task<bool> CancelBookingAsync(int bookingId, string userId)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
-            try
+            var booking = await _context.Bookings
+                .Include(b => b.Trip)
+                .FirstOrDefaultAsync(b => b.Id == bookingId && b.UserId == userId);
+            
+            if (booking == null || booking.IsCancelled || booking.Trip.DepartureDateTime < DateTime.Now)
             {
-                var booking = await _context.Bookings
-                    .Include(b => b.Trip)
-                    .FirstOrDefaultAsync(b => b.Id == bookingId && b.UserId == userId && !b.IsCancelled);
-
-                if (booking == null)
-                {
-                    return false;
-                }
-
-                booking.IsCancelled = true;
-
-                // Increasing the number of available seats
-                booking.Trip.AvailableSeats += 1;
-
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-
-                return true;
-            }
-            catch
-            {
-                await transaction.RollbackAsync();
                 return false;
             }
+            
+            booking.IsCancelled = true;
+            
+            booking.Trip.AvailableSeats += 1;
+            
+            await _context.SaveChangesAsync();
+            
+            return true;
         }
     }
 }

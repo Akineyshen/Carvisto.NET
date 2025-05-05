@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using Carvisto.Models.ViewModels;
 
 namespace Carvisto.Controllers
 {
@@ -22,6 +23,44 @@ namespace Carvisto.Controllers
             _bookingService = bookingService;
             _tripService = tripService;
             _userManager = userManager;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+
+            var bookings = await _bookingService.GetUserBookingASync(user.Id);
+
+            var viewModel = bookings.Select(b => new UserBookingViewModel
+            {
+                Id = b.Id,
+                TripId = b.TripId,
+                BookingDate = b.BookingDate,
+                DepartureDate = b.Trip.DepartureDateTime,
+                StartLocation = b.Trip.StartLocation,
+                EndLocation = b.Trip.EndLocation,
+                DriverName = b.Trip.Driver.ContactName,
+                Price = b.Trip.Price,
+                BookingStatus = GetBookingsStatus(b)
+            }).ToList();
+            
+            return View(viewModel);
+        }
+
+        private string GetBookingsStatus(Booking booking)
+        {
+            if (booking.IsCancelled)
+                return "Cancelled";
+            
+            if (booking.Trip.DepartureDateTime < DateTime.Now)
+                return "Expired";
+            
+            return "Active";
         }
 
         [HttpPost]
@@ -49,6 +88,8 @@ namespace Carvisto.Controllers
         public async Task<IActionResult> Cancel(int id)
         {
             var user = await _userManager.GetUserAsync(User);
+            var booking = await _bookingService.GetBookingByIdAsync(id);
+            int tripId = booking.TripId;
             
             var result = await _bookingService.CancelBookingAsync(id, user.Id);
 
@@ -61,7 +102,7 @@ namespace Carvisto.Controllers
                 TempData["ErrorMessage"] = "Booking cancellation failed!";
             }
 
-            return RedirectToAction("Details", "Trips", new { id });
+            return RedirectToAction("Details", "Trips", new { id = tripId });
         }
     }
 }

@@ -1,0 +1,61 @@
+@model List<Carvisto.Models.ViewModels.UserBookingViewModel>
+
+@{
+    ViewData["Title"] = "Мои бронирования";
+}
+
+<div class="container mt-4">
+    <h1>Мои бронирования</h1>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            У вас пока нет бронирований. <a asp-controller="Trips" asp-action="Index">Найти поездку</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var booking in Model)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>Бронирование #@booking.Id</span>
+                            @{
+                                var statusClass = booking.BookingStatus switch
+                                {
+                                    "Активно" => "badge bg-success",
+                                    "Завершено" => "badge bg-secondary",
+                                    "Отменено" => "badge bg-danger",
+                                    _ => "badge bg-info"
+                                };
+                            }
+                            <span class="@statusClass">@booking.BookingStatus</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@booking.StartLocation → @booking.EndLocation</h5>
+                            <p class="card-text">
+                                <strong>Дата отправления:</strong> @booking.DepartureDate.ToString("dd.MM.yyyy HH:mm")<br />
+                                <strong>Водитель:</strong> @booking.DriverName<br />
+                                <strong>Стоимость:</strong> @booking.Price ₽<br />
+                                <strong>Дата бронирования:</strong> @booking.BookingDate.ToString("dd.MM.yyyy HH:mm")
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <a asp-controller="Trips" asp-action="Details" asp-route-id="@booking.TripId" class="btn btn-primary">Подробнее</a>
+                            
+                            @if (booking.BookingStatus == "Активно")
+                            {
+                                <form asp-controller="Bookings" asp-action="Cancel" method="post" style="display: inline;">
+                                    <input type="hidden" name="id" value="@booking.Id" />
+                                    <button type="submit" class="btn btn-danger">Отменить бронирование</button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
