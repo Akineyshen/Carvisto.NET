@@ -6,7 +6,7 @@
     <title>@(ViewBag.Title == "Home Page" ? "Carvisto" : ViewBag.Title)</title>
     <link rel="icon" href="~/images/logo.png" type="image/x-icon" />
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
-    <script src="/js/mobileMenu.js"></script>
+    <script src="/js/dropdown.js"></script>
     <script src="/js/rotateLocation.js"></script>
 </head>
 <body>
@@ -30,7 +30,18 @@
             <a class="create-trip-btn" href="/Trips/Create/">Create Trip</a>
             @if (User.Identity.IsAuthenticated)
             {
-                <a class="login-btn" asp-controller="Account" asp-action="Index">My Account</a>
+                <div class="account-dropdown">
+                    <button class="login-btn dropdown-toggle">My Account</button>
+                    <div class="dropdown-menu">
+                        <a asp-controller="MyTrips" asp-action="Index">My Trips</a>
+                        <a asp-controller="Bookings" asp-action="Index">My Bookings</a>
+                        <a asp-controller="Account" asp-action="Index">Settings</a>
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button type="submit" class="dropdown-link">Logout</button>
+                        </form>
+                    </div>
+                </div>
+
             }
             else
             {
