@@ -76,7 +76,7 @@ namespace Carvisto.Services
             await _userManager.AddToRoleAsync(user, role);
         }
 
-        public async Task<AccountViewModel> GetAccountViewModelAsync(string userId)
+        public async Task<AccountViewModel> GetAccountViewModelAsync(string? userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
