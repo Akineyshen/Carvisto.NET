@@ -205,6 +205,7 @@ namespace Carvisto.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var trip = await _tripService.GetTripByIdAsync(id);
+            var passengers = await _tripService.GetPassengersUsersAsync(id);
 
             if (trip == null)
             {
@@ -217,7 +218,8 @@ namespace Carvisto.Controllers
                 IsAuthenticated = User.Identity.IsAuthenticated,
                 IsModerator = User.IsInRole("Moderator"),
                 IsDriver = false,
-                HasActivateBooking = false
+                HasActivateBooking = false,
+                Passengers = passengers,
             };
 
             if (User.Identity.IsAuthenticated)

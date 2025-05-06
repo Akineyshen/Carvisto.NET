@@ -12,5 +12,6 @@ namespace Carvisto.Models
         public int? ActiveBookingId { get; set; }
         public string RouteDistance { get; set; }
         public string RouteDuration { get; set; }
+        public List<ApplicationUser> Passengers { get; set; } = new List<ApplicationUser>();
     }
 }

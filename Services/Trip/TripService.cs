@@ -112,5 +112,18 @@ namespace Carvisto.Services
                 .OrderByDescending(t => t.DepartureDateTime)
                 .ToListAsync();
         }
+        
+        public async Task<List<ApplicationUser>> GetPassengersUsersAsync(int tripId)
+        {
+            var trip = await _context.Trips
+                .Include(t => t.Bookings)
+                .ThenInclude(b => b.User)
+                .FirstOrDefaultAsync(t => t.Id == tripId);
+
+            return trip?.Bookings
+                .Where(b => !b.IsCancelled)
+                .Select(b => b.User)
+                .ToList() ?? new List<ApplicationUser>();
+        }
     }
 }
