@@ -19,10 +19,20 @@
 }
 
 .settings-card {
+    max-width: 1200px;
     background: white;
     border-radius: 20px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
     margin: 8rem auto;
+    padding: 40px;
+    width: 100%;
+}
+
+.settings-card-account {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    margin: 2rem auto;
     padding: 40px;
     width: 100%;
 }
@@ -106,14 +116,9 @@
 }
 
 /* Settings card */
-.settings-card {
-    max-width: 1200px;
-}
 
 .settings-card-image {
-    background: white;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -139,6 +144,9 @@
 }
 
 .card-booking {
-    display: flex;
-    justify-content: right;
+    
+}
+
+.card-passangers {
+    margin-top: 2rem;
 }

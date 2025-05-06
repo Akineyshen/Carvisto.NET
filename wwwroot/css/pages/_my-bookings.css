@@ -1,0 +1,37 @@
+.booking-section-title-active {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 1rem;
+}
+
+.booking-section-title-completed {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    background-color: var(--secondary-color);
+    color: white;
+    border-radius: 1rem;
+}
+
+.booking-section-title-cancelled {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    background-color: var(--error-color);
+    color: white;
+    border-radius: 1rem;
+}
+
+.booking-section {
+    margin-bottom: 3rem;
+}
+
+.empty-section-message {
+    text-align: start;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+}

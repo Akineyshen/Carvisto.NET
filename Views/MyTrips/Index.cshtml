@@ -5,7 +5,6 @@
 }
 
 <div class="settings-card mt-4">
-
         <div class="trips-container">
             <div class="trips-header">
                 <h2 class="my-trip-header">My Trips</h2>
@@ -13,7 +12,6 @@
                     <a asp-controller="Trips" asp-action="Create" class="add-trip-btn">Create New Trip</a>
                 </div>
             </div>
-
             @if (User != null && Model.Any())
             {
                 <div class="trips-list">

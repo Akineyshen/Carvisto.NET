@@ -1,8 +1,8 @@
 /* My account page styles */
 .settings-title {
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     color: var(--text-dark);
 }
 
@@ -45,8 +45,7 @@
 .logout-container {
     display: flex;
     justify-content: center;
-    margin-top: 60px;
-    margin-bottom: 40px;
+    margin: 2rem auto;
 }
 
 .profile-image-section {
@@ -66,4 +65,8 @@
 
 .profile-image-container {
     padding: 30px;
+}
+
+.change-image {
+    flex-direction: row;
 }

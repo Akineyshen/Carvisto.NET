@@ -36,6 +36,13 @@
     align-items: center;
 }
 
+.detail-item-cancel {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: end;
+}
+
 .comments-item {
     margin-top: 2rem;
 }
@@ -81,6 +88,13 @@
 .title-map {
     font-size: 1.6rem;
     font-weight: 600;
+    color: var(--text-dark);
+    margin: 1rem auto;
+}
+
+.title-passengers {
+    font-size: 1.2rem;
+    font-weight: 500;
     color: var(--text-dark);
     margin: 1rem auto;
 }

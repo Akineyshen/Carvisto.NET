@@ -1,61 +1,159 @@
 @model List<Carvisto.Models.ViewModels.UserBookingViewModel>
 
 @{
-    ViewData["Title"] = "Мои бронирования";
+    ViewData["Title"] = "My Bookings";
 }
 
-<div class="container mt-4">
-    <h1>Мои бронирования</h1>
-
-    @if (!Model.Any())
-    {
-        <div class="alert alert-info">
-            У вас пока нет бронирований. <a asp-controller="Trips" asp-action="Index">Найти поездку</a>
+<div class="settings-card">
+    <div class="trips-header">
+        <h2 class="my-trip-header">My Bookings</h2>
+        <div class="create-trip-btn">
+            <a asp-controller="Trips" asp-action="Index" class="add-trip-btn">Search Trips</a>
         </div>
-    }
-    else
-    {
-        <div class="row">
-            @foreach (var booking in Model)
-            {
-                <div class="col-md-6 mb-4">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <span>Бронирование #@booking.Id</span>
-                            @{
-                                var statusClass = booking.BookingStatus switch
-                                {
-                                    "Активно" => "badge bg-success",
-                                    "Завершено" => "badge bg-secondary",
-                                    "Отменено" => "badge bg-danger",
-                                    _ => "badge bg-info"
-                                };
-                            }
-                            <span class="@statusClass">@booking.BookingStatus</span>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">@booking.StartLocation → @booking.EndLocation</h5>
-                            <p class="card-text">
-                                <strong>Дата отправления:</strong> @booking.DepartureDate.ToString("dd.MM.yyyy HH:mm")<br />
-                                <strong>Водитель:</strong> @booking.DriverName<br />
-                                <strong>Стоимость:</strong> @booking.Price ₽<br />
-                                <strong>Дата бронирования:</strong> @booking.BookingDate.ToString("dd.MM.yyyy HH:mm")
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <a asp-controller="Trips" asp-action="Details" asp-route-id="@booking.TripId" class="btn btn-primary">Подробнее</a>
-                            
-                            @if (booking.BookingStatus == "Активно")
-                            {
+    </div>
+    <div class="trips-container">
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info">
+                You don't have any reservations yet. <a asp-controller="Trips" asp-action="Index">Find a ride</a>
+            </div>
+        }
+        else
+        {
+            <div class="booking-section">
+                <h3 class="booking-section-title-active">Active bookings</h3>
+                <div class="trips-list">
+                    @foreach (var booking in Model.Where(b => b.BookingStatus == "Active"))
+                    {
+                        <div class="trip-item">
+                            <div class="my-trip-details">
+                                <div class="my-trip-route">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                                    </svg>
+                                    @booking.StartLocation ➞ @booking.EndLocation
+                                </div>
+                                <div class="my-trip-date">
+                                    <svg class="trip-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    @booking.DepartureDate.ToString("dd.MM.yyyy HH:mm")
+                                </div>
+                            </div>
+                            <div class="my-trip-actions">
+                                <a asp-controller="Trips" asp-action="Details" asp-route-id="@booking.TripId" class="view-button-account">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                    </svg>
+                                </a>
+                                <button type="submit" class="edit-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-text-fill" viewBox="0 0 16 16">
+                                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z"/>
+                                    </svg>
+                                </button>
                                 <form asp-controller="Bookings" asp-action="Cancel" method="post" style="display: inline;">
                                     <input type="hidden" name="id" value="@booking.Id" />
-                                    <button type="submit" class="btn btn-danger">Отменить бронирование</button>
+                                    <button type="submit" class="delete-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                                        </svg>
+                                    </button>
                                 </form>
-                            }
+                            </div>
                         </div>
-                    </div>
+                    }
+                    @if (!Model.Any(b => b.BookingStatus == "Active"))
+                    {
+                        <div class="empty-section-message">You don't have any active bookings</div>
+                    }
                 </div>
-            }
-        </div>
-    }
+            </div>
+
+            <!-- Завершенные бронирования -->
+            <div class="booking-section">
+                <h3 class="booking-section-title-completed">Completed bookings</h3>
+                <div class="trips-list">
+                    @foreach (var booking in Model.Where(b => b.BookingStatus == "Expired"))
+                    {
+                        <div class="trip-item completed-booking">
+                            <div class="my-trip-details">
+                                <div class="my-trip-route">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                                    </svg>
+                                    @booking.StartLocation ➞ @booking.EndLocation
+                                </div>
+                                <div class="my-trip-date">
+                                    <svg class="trip-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    @booking.DepartureDate.ToString("dd.MM.yyyy HH:mm")
+                                </div>
+                            </div>
+                            <div class="my-trip-actions">
+                                <a asp-controller="Trips" asp-action="Details" asp-route-id="@booking.TripId" class="view-button-account">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                    </svg>
+                                </a>
+                                <button type="submit" class="edit-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-text-fill" viewBox="0 0 16 16">
+                                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    }
+                    @if (!Model.Any(b => b.BookingStatus == "Expired"))
+                    {
+                        <div class="empty-section-message">You don't have any completed bookings.</div>
+                    }
+                </div>
+            </div>
+
+            <!-- Отмененные бронирования -->
+            <div class="booking-section">
+                <h3 class="booking-section-title-cancelled">Cancelled bookings</h3>
+                <div class="trips-list">
+                    @foreach (var booking in Model.Where(b => b.BookingStatus == "Cancelled"))
+                    {
+                        <div class="trip-item canceled-booking">
+                            <div class="my-trip-details">
+                                <div class="my-trip-route">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                                    </svg>
+                                    @booking.StartLocation ➞ @booking.EndLocation
+                                </div>
+                                <div class="my-trip-date">
+                                    <svg class="trip-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    @booking.DepartureDate.ToString("dd.MM.yyyy HH:mm")
+                                </div>
+                            </div>
+                            <div class="my-trip-actions">
+                                <a asp-controller="Trips" asp-action="Details" asp-route-id="@booking.TripId" class="view-button-account">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                    @if (!Model.Any(b => b.BookingStatus == "Cancelled"))
+                    {
+                        <div class="empty-section-message">You don't have any cancelled bookings.</div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
 </div>
