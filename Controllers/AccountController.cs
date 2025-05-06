@@ -1,36 +1,36 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Carvisto.Models;
 using Microsoft.AspNetCore.Authorization;
 using Carvisto.Services;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Carvisto.Controllers
 {
+    // Controller handling user authentication, profile management, and account operations
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
-        private readonly IBookingService _bookingService;
 
+        // Initializes a new instance with dependency injection for account services
         public AccountController(
-            IAccountService accountService,
-            IBookingService bookingService)
+            IAccountService accountService)
         {
             _accountService = accountService;
-            _bookingService = bookingService;
         }
 
+        // GET: /Account/Register
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
         
+        // POST: /Account/Register
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
+                //Attempt user creation through service
                 var result = await _accountService.RegisterUserAsync(
                     model.Email,
                     model.Password,
@@ -39,14 +39,14 @@ namespace Carvisto.Controllers
                 
                 if (result.Succeeded)
                 {
+                    // Post-registration setup
                     var user = await _accountService.GetUserByEmailAsync(model.Email);
-                    
                     await _accountService.AddUserToRoleAsync(user, "User");
                     await _accountService.SignInUserAsync(user, isPersistent: false);
-                    
                     return RedirectToAction("Index");
                 }
 
+                // Add Identity errors to ModelState
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
@@ -55,12 +55,14 @@ namespace Carvisto.Controllers
             return View(model);
         }
 
+        // GET: /Account/Login
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
+        // POST: /Account/Login
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -69,6 +71,7 @@ namespace Carvisto.Controllers
                 var result = await _accountService.LoginUserAsync(model.Email, model.Password, model.RememberMe);
                 if (result.Succeeded)
                 {
+                    // Profile completeness check
                     var user = await _accountService.GetUserByEmailAsync(model.Email);
                     if (string.IsNullOrEmpty(user.ContactName) || string.IsNullOrEmpty(user.ContactPhone))
                     {
@@ -81,6 +84,7 @@ namespace Carvisto.Controllers
             return View(model);
         }
 
+        // POST: /Account/Logout
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
@@ -88,26 +92,25 @@ namespace Carvisto.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // GET: /Account/AccessDenied
         [HttpGet]
         public IActionResult AccessDenied()
         {
-            return View();
+            return View("Index");
         }
 
+        // GET: /Account/Index
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var user = await _accountService.GetCurrentUserAsync();
-            if (user == null)
-            {
-                return NotFound();
-            }
-            
+
             var model = await _accountService.GetAccountViewModelAsync(user.Id);
             return View(model);
         }
 
+        // Updates user profile information
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -117,24 +120,26 @@ namespace Carvisto.Controllers
             if (ModelState.IsValid)
             {
                 var currentUser = await _accountService.GetCurrentUserAsync();
-                if (currentUser != null)
                 {
-                    string originalEmail = currentUser.Email;
-                    
-                    currentUser.ContactName = user.ContactName;
-                    currentUser.ContactPhone = user.ContactPhone;
-                    
+                    string? originalEmail = currentUser.Email;
                     bool emailChanged = !string.Equals(originalEmail, user.Email, StringComparison.OrdinalIgnoreCase);
 
+                    // Email change validation
                     if (emailChanged)
                     {
-                        var existingUser = await _accountService.GetUserByEmailAsync(user.Email);
-                        if (existingUser != null && existingUser.Id != currentUser.Id)
+                        if (user.Email != null)
                         {
-                            TempData["ProfileUpdateError"] = "Email is already in use.";
-                            return RedirectToAction("Index", "Account");
+                            var existingUser = await _accountService.GetUserByEmailAsync(user.Email);
+                            if (existingUser.Id != currentUser.Id)
+                            {
+                                TempData["ProfileUpdateError"] = "Email is already in use.";
+                                return RedirectToAction("Index", "Account");
+                            }
                         }
                         
+                        // Apply profile updates
+                        currentUser.ContactName = user.ContactName;
+                        currentUser.ContactPhone = user.ContactPhone;
                         currentUser.Email = user.Email;
                         currentUser.UserName = user.Email;
                     }
@@ -155,14 +160,10 @@ namespace Carvisto.Controllers
                         return RedirectToAction("Index", "Account");
                     }
                 }
-                else
-                {
-                    TempData["ProfileUpdateError"] = "User not found.";
-                    return RedirectToAction("Index", "Account");
-                }
             }
             else
             {
+                // Model validation failed
                 var modelErrors = ModelState.Values
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage);
@@ -171,11 +172,13 @@ namespace Carvisto.Controllers
             }
         }
         
+        // Changes user password
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
+            // Basic field validation
             if (string.IsNullOrEmpty(model.CurrentPassword) || string.IsNullOrEmpty(model.NewPassword) ||
                 string.IsNullOrEmpty(model.ConfirmPassword))
             {
@@ -191,7 +194,7 @@ namespace Carvisto.Controllers
             
             if (!ModelState.IsValid)
             {
-                var viewModel = await _accountService.GetAccountViewModelAsync(null); // здесь нужно получить текущего пользователя
+                var viewModel = await _accountService.GetAccountViewModelAsync(null);
                 viewModel.ChangePassword = model;
                 return View("Index", viewModel);
             }
@@ -212,11 +215,13 @@ namespace Carvisto.Controllers
             }
         }
 
+        // Handles profile image uploads
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UploadProfileImage(IFormFile profileImage)
+        public async Task<IActionResult> UploadProfileImage(IFormFile? profileImage)
         {
+            // File validation
             if (profileImage == null || profileImage.Length == 0)
             {
                 TempData["ProfileImageError"] = "No image selected.";
@@ -239,13 +244,10 @@ namespace Carvisto.Controllers
             try
             {
                 var user = await _accountService.GetCurrentUserAsync();
-                if (user == null)
-                {
-                    return NotFound();
-                }
 
                 string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profiles");
 
+                // Save image and update profile
                 using var memoryStream = new MemoryStream();
                 await profileImage.CopyToAsync(memoryStream);
                 var fileBytes = memoryStream.ToArray();
@@ -269,6 +271,7 @@ namespace Carvisto.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+        // Removes profile image
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -277,10 +280,6 @@ namespace Carvisto.Controllers
             try
             {
                 var user = await _accountService.GetCurrentUserAsync();
-                if (user == null)
-                {
-                    return NotFound();
-                }
 
                 await _accountService.DeleteProfileImageAsync(user);
                 
@@ -294,14 +293,6 @@ namespace Carvisto.Controllers
                 TempData["ProfileImageError"] = $"Error deleting image: {ex.Message}";
             }
             
-            return RedirectToAction("Index", "Account");
-        }
-
-        [Authorize]
-        public async Task<IActionResult> Bookings()
-        {
-            var user = await _accountService.GetCurrentUserAsync();
-            var bookings = await _bookingService.GetUserBookingASync(user.Id);
             return RedirectToAction("Index", "Account");
         }
     }
