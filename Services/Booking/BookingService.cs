@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Carvisto.Models.ViewModels;
 
 namespace Carvisto.Services
 {
@@ -108,6 +109,34 @@ namespace Carvisto.Services
             await _context.SaveChangesAsync();
             
             return true;
+        }
+        
+        public async Task<BookingReceiptViewModel> GetBookingReceiptAsync(int bookingId, string userId)
+        {
+            var booking = await _context.Bookings
+                .Include(b => b.Trip)
+                .ThenInclude(t => t.Driver)
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(b => b.Id == bookingId && b.UserId == userId);
+
+            if (booking == null)
+            {
+                return null;
+            }
+
+            return new BookingReceiptViewModel
+            {
+                BookingId = bookingId,
+                BookingDate = booking.BookingDate,
+                PassengerName = booking.User.ContactName,
+                DriverName = booking.Trip.Driver.ContactName,
+                StartLocation = booking.Trip.StartLocation,
+                EndLocation = booking.Trip.EndLocation,
+                DepartureDateTime = booking.Trip.DepartureDateTime,
+                Price = booking.Trip.Price,
+                BookingStatus = booking.IsCancelled ? "Cancelled" : "Active",
+                BookingReference = $"BK-{bookingId:D6}"
+            };
         }
     }
 }

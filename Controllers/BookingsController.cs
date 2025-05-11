@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Carvisto.Models.ViewModels;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 
 namespace Carvisto.Controllers
 {
@@ -103,6 +105,37 @@ namespace Carvisto.Controllers
             }
 
             return RedirectToAction("Details", "Trips", new { id = tripId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Receipt(int id)
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var receipt = await _bookingService.GetBookingReceiptAsync(id, user.Id);
+
+                if (receipt == null)
+                {
+                    return NotFound();
+                }
+
+                var pdf = new ViewAsPdf("Receipt", receipt)
+                {
+                    FileName = $"Booking_{receipt.BookingId}.pdf",
+                    PageOrientation = Orientation.Portrait,
+                    PageSize = Size.A4,
+                    CustomSwitches = "--disable-smart-shrinking --enable-local-file-access",
+                    IsJavaScriptDisabled = true
+                };
+
+                var binary = await pdf.BuildFile(ControllerContext);
+                return File(binary, "application/pdf", $"Booking_{receipt.BookingId}.pdf");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
         }
     }
 }

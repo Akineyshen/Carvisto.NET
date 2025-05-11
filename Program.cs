@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Carvisto.Data;
 using Carvisto.Models;
 using Carvisto.Services;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ var app = builder.Build();
 var cultureInfo = new CultureInfo("en-US");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
 
 if (!app.Environment.IsDevelopment())
 {
@@ -70,6 +73,7 @@ using (var scope = app.Services.CreateScope())
         await userManager.CreateAsync(moderator, "Moderator123!");
         await userManager.AddToRoleAsync(moderator, "Moderator");
     }
+    
 }
 
 app.Run();

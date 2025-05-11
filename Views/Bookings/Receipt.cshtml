@@ -1,0 +1,239 @@
+@{
+    Layout = null;
+}
+@model Carvisto.Models.ViewModels.BookingReceiptViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Carvisto - Booking Confirmation</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .receipt-container {
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ddd; /* Light border for print */
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .header-right {
+            text-align: right;
+        }
+
+        .total-header {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .date {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Thank You Section */
+        .thank-you h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .thank-you p {
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* Image Placeholder */
+        .image-placeholder {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* Total Section */
+        .total-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .total-label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .total-amount {
+            font-size: 18px;
+            color: #008000; /* Green for amount */
+        }
+
+        /* Booking Info */
+        .booking-info {
+            margin: 20px 0;
+            font-size: 16px;
+        }
+
+        .booking-info .diamond {
+            font-size: 20px;
+            color: #333;
+            margin-right: 5px;
+        }
+
+        /* Info Box */
+        .info-box {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #008000; /* Green accent */
+        }
+
+        .info-box div {
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Trip Details */
+        .trip-details h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .detail-item div {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .important {
+            font-weight: bold;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #ccc;
+            margin: 10px 0;
+        }
+
+        /* Footer Note */
+        .footer-note {
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        /* General Text Styles */
+        h1, h2 {
+            color: #333;
+        }
+
+        p, div {
+            color: #333;
+        }
+
+        strong {
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="header">
+            <div class="logo">Carvisto</div>
+            <div class="header-right">
+                <div class="total-header">Booking Confirmed</div>
+                <div class="date">@Model.BookingDate.ToString("dd.mm.yyyy HH:mm")</div>
+            </div>
+        </div>
+
+        <div class="thank-you">
+            <h1>Thanks for booking, @Model.PassengerName</h1>
+            <p>Your ride has been confirmed and is ready to go.</p>
+        </div>
+
+        <div class="total-section">
+            <div class="total-label">Total</div>
+            <div class="total-amount">@Model.Price.ToString("C")</div>
+        </div>
+
+        <div class="booking-info">
+            <span class="diamond">◆</span>
+            <span><strong>Booking Reference:</strong> @Model.BookingReference</span>
+        </div>
+
+        <div class="info-box">
+            <div class="info-box-accent"></div>
+            <div><strong>Important:</strong> Please be ready 10 minutes before your scheduled departure time.</div>
+        </div>
+
+        <div class="trip-details">
+            <h2>Trip Details</h2>
+
+            <div class="detail-item">
+                <div class="important">From:</div>
+                <div class="important">@Model.StartLocation</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="important">To:</div>
+                <div class="important">@Model.EndLocation</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="important">Departure Date & Time:</div>
+                <div class="important">@Model.DepartureDateTime.ToString("dd.mm.yyyy HH:mm")</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="detail-item">
+                <div>Driver:</div>
+                <div>@Model.DriverName</div>
+            </div>
+
+            <div class="detail-item">
+                <div>Booking Status:</div>
+                <div>@Model.BookingStatus</div>
+            </div>
+
+            <div class="detail-item">
+                <div>Booking Date:</div>
+                <div>@Model.BookingDate.ToString("dd.mm.yyyy HH:mm")</div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            <p>Thank you for choosing Carvisto for your journey.</p>
+            <p>© @DateTime.Now.Year Carvisto. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
