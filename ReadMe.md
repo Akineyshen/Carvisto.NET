@@ -21,7 +21,7 @@
 
 ## Requirements
 - .NET 6.0 or later
-- SQLITE database
+- SQLITE
 
 ## Installation
 1. Clone the repository:
