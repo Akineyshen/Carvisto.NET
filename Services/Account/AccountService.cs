@@ -2,20 +2,18 @@ using Carvisto.Data;
 using Carvisto.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Carvisto.Services
 {
     public class AccountService : IAccountService
     {
+        // Fields
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly CarvistoDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        // Constructor
         public AccountService(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -27,7 +25,7 @@ namespace Carvisto.Services
             _context = context;
             _httpContextAccessor = httpContextAccessor;
         }
-
+        
         public async Task<IdentityResult> RegisterUserAsync(string email, string password, string contactName, string contactPhone)
         {
             var user = new ApplicationUser
@@ -40,12 +38,12 @@ namespace Carvisto.Services
             
             return await _userManager.CreateAsync(user, password);
         }
-
+        
         public async Task<SignInResult> LoginUserAsync(string email, string password, bool rememberMe)
         {
             return await _signInManager.PasswordSignInAsync(email, password, rememberMe, lockoutOnFailure: false);
         }
-
+        
         public async Task SignInUserAsync(ApplicationUser user, bool isPersistent)
         {
             await _signInManager.SignInAsync(user, isPersistent);
@@ -55,27 +53,27 @@ namespace Carvisto.Services
         {
             await _signInManager.SignOutAsync();
         }
-
+        
         public async Task<ApplicationUser> GetUserByEmailAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
         }
-
+        
         public async Task<ApplicationUser> GetCurrentUserAsync()
         {
             return await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
         }
-
+        
         public async Task<IdentityResult> UpdateUserAsync(ApplicationUser user)
         {
             return await _userManager.UpdateAsync(user);
         }
-
+        
         public async Task AddUserToRoleAsync(ApplicationUser user, string role)
         {
             await _userManager.AddToRoleAsync(user, role);
         }
-
+        
         public async Task<AccountViewModel> GetAccountViewModelAsync(string? userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
