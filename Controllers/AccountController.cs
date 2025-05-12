@@ -110,17 +110,18 @@ namespace Carvisto.Controllers
             return View(model);
         }
 
-        // Updates user profile information
+        // POST: /Account/Index (Update Profile)
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateProfile(ApplicationUser user)
         {
-            
             if (ModelState.IsValid)
             {
+                // Basic field validation
                 var currentUser = await _accountService.GetCurrentUserAsync();
                 {
+                    // Check if the email is already in use
                     string? originalEmail = currentUser.Email;
                     bool emailChanged = !string.Equals(originalEmail, user.Email, StringComparison.OrdinalIgnoreCase);
 
@@ -143,10 +144,10 @@ namespace Carvisto.Controllers
                         currentUser.Email = user.Email;
                         currentUser.UserName = user.Email;
                     }
-                    
-                    
+                    // Update user profile
                     var result = await _accountService.UpdateUserAsync(currentUser);
                     
+                    // Check if the update was successful
                     if (result.Succeeded)
                     {
                         TempData["ProfileUpdateSuccess"] = "Information successfully updated.";
@@ -172,7 +173,7 @@ namespace Carvisto.Controllers
             }
         }
         
-        // Changes user password
+        // POST: /Account/Index (Change Password)
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -186,12 +187,14 @@ namespace Carvisto.Controllers
                 return RedirectToAction("Index", "Account");
             }
 
+            // Password complexity validation
             if (model.NewPassword != model.ConfirmPassword)
             {
                 TempData["PasswordError"] = "New passwords do not match.";
                 return RedirectToAction("Index", "Account");
             }
             
+            // Password length validation
             if (!ModelState.IsValid)
             {
                 var viewModel = await _accountService.GetAccountViewModelAsync(null);
@@ -199,9 +202,11 @@ namespace Carvisto.Controllers
                 return View("Index", viewModel);
             }
 
+            // Attempt to change the password
             var user = await _accountService.GetCurrentUserAsync();
             var result = await _accountService.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
 
+            // Check if the password change was successful
             if (result.Succeeded)
             {
                 TempData["PasswordSuccess"] = "Password changed successfully";
@@ -215,7 +220,7 @@ namespace Carvisto.Controllers
             }
         }
 
-        // Handles profile image uploads
+        // POST: /Account/Index (Upload Profile Image)
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -228,12 +233,14 @@ namespace Carvisto.Controllers
                 return RedirectToAction("Index", "Account");
             }
 
+            // File size validation
             if (profileImage.Length > 1024 * 1024 * 5)
             {
                 TempData["ProfileImageError"] = "Image size is too large.";
                 return RedirectToAction("Index", "Account");
             }
             
+            // File type validation
             string[] allowedExtensions = { "image/jpeg", "image/png" };
             if (!allowedExtensions.Contains(profileImage.ContentType))
             {
@@ -252,12 +259,14 @@ namespace Carvisto.Controllers
                 await profileImage.CopyToAsync(memoryStream);
                 var fileBytes = memoryStream.ToArray();
 
+                // Save the image to the server
                 string relativePath = await _accountService.SaveProfileImageAsync(
                     user,
                     uploadFolder,
                     profileImage.FileName,
                     fileBytes);
 
+                // Update user profile with the image path
                 user.ProfileImagePath = relativePath;
                 await _accountService.UpdateUserAsync(user);
 
@@ -271,7 +280,7 @@ namespace Carvisto.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        // Removes profile image
+        // POST: /Account/Index (Delete Profile Image)
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Carvisto.Controllers
 {
-    //GET: Info page
+    //GET: FAQ/
     public class FaqController : Controller
     {
         public IActionResult Index()

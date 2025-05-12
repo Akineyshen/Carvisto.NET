@@ -28,14 +28,14 @@ namespace Carvisto.Controllers
             _bookingService = bookingService;
         }
 
-        // GET: List of all trips
+        // GET: Trips/
         public async Task<IActionResult> Index()
         {
             var trips = await _tripService.GetAllTripsAsync();
             return View(trips);
         }
 
-        // GET: Form for creating a trip
+        // GET: Trips/Create
         [Authorize]
         public IActionResult Create()
         {
@@ -44,7 +44,7 @@ namespace Carvisto.Controllers
             return View();
         }
 
-        // POST: Processing the creation of a trip
+        // POST: Trips/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -75,12 +75,12 @@ namespace Carvisto.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"Ошибка при создании поездки: {ex.Message}");
+                ModelState.AddModelError("", $"Error when creating a trip: {ex.Message}");
                 return View(trip);
             }
         }
-
-        // GET: Trip editing form
+        
+        // GET: Trips/Edit/{id}
         [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
@@ -95,7 +95,7 @@ namespace Carvisto.Controllers
             return View(trip);
         }
 
-        // POST: Editing Processing
+        // POST: Trips/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -106,22 +106,27 @@ namespace Carvisto.Controllers
                 return NotFound();
             }
 
+            // Checking access rights (owner or moderator)
             var existingTrip = await _tripService.GetTripByIdAsync(id);
 
+            // If the trip is not found
             if (existingTrip.DriverId != User.FindFirstValue(ClaimTypes.NameIdentifier) && !User.IsInRole("Moderator"))
             {
                 return Forbid();
             }
 
+            // Checking the model state
             if (ModelState.IsValid)
             {
                 try
                 {
-                    trip.DriverId = existingTrip.DriverId; // Сохраняем оригинального водителя
+                    // Updating the trip
+                    trip.DriverId = existingTrip.DriverId;
                     await _tripService.UpdateTripAsync(trip);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    // Checking if the trip exists
                     if (!_tripService.TripExists(trip.Id))
                     {
                         return NotFound();
@@ -136,12 +141,14 @@ namespace Carvisto.Controllers
             return View(trip);
         }
 
-        // GET: Confirmation of deletion
+        // GET: Trips/Delete/{id}
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
+            // Checking access rights (owner or moderator)
             var trip = await _tripService.GetTripByIdAsync(id);
 
+            // If the trip is not found
             if (trip.DriverId != User.FindFirstValue(ClaimTypes.NameIdentifier) && !User.IsInRole("Moderator"))
             {
                 return Forbid();
@@ -150,49 +157,58 @@ namespace Carvisto.Controllers
             return View(trip);
         }
 
-        // POST: Deletion Processing
+        // POST: Trips/Delete/{id}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            // Checking access rights (owner or moderator)
             var trip = await _tripService.GetTripByIdAsync(id);
             
+            // If the trip is not found
             if (trip.DriverId != User.FindFirstValue(ClaimTypes.NameIdentifier) && !User.IsInRole("Moderator"))
             {
                 return Forbid();
             }
             
+            // Deleting the trip
             await _tripService.DeleteTripAsync(id);
             return RedirectToAction(nameof(Index));
         }
         
-        // GET: Search trips
+        // GET: Trips/Search
         [HttpGet]
         public async Task<IActionResult> Search(string StartLocation, string EndLocation, DateTime? DepartureDate, SearchTripViewModel model)
         {
+            // Checking if the model is valid
             var trips = _tripService.GetTripsQuery();
 
+            // Filtering trips based on the search criteria
             if (!string.IsNullOrEmpty(model.StartLocation))
             {
                 trips = trips
                     .Where(t => t.StartLocation.StartsWith(model.StartLocation));
             }
 
+            // Filtering trips based on the search criteria
             if (!string.IsNullOrEmpty(model.EndLocation))
             {
                 trips = trips
                     .Where(t => t.EndLocation.EndsWith(model.EndLocation));
             }
 
+            // Filtering trips based on the search criteria
             if (model.DepartureDate.HasValue)
             {
                 trips = trips
                     .Where(t => t.DepartureDateTime.Date == model.DepartureDate.Value.Date);
             }
 
+            // Sorting trips by departure date
             var results = await trips.ToListAsync();
 
+            // Setting the search criteria in the ViewData
             ViewData["StartLocation"] = StartLocation;
             ViewData["EndLocation"] = EndLocation;
             ViewData["DepartureDate"] = DepartureDate?.ToString("yyyy-MM-dd");
@@ -200,10 +216,11 @@ namespace Carvisto.Controllers
             return View("Index", results);
         }
         
-        // GET: Details trips
+        // GET: Trips/Details/{id}
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
+            // Getting the trip by ID
             var trip = await _tripService.GetTripByIdAsync(id);
             var passengers = await _tripService.GetPassengersUsersAsync(id);
 
@@ -212,6 +229,7 @@ namespace Carvisto.Controllers
                 return NotFound();
             }
 
+            // Checking if the trip is active
             var viewModel = new TripDetailsViewModel 
             {
                 Trip = trip,
@@ -222,12 +240,15 @@ namespace Carvisto.Controllers
                 Passengers = passengers,
             };
 
+            // Checking if the user is authenticated
             if (User.Identity.IsAuthenticated)
             {
+                // Getting the current user
                 var user = await _userManager.GetUserAsync(User);
                 viewModel.IsDriver = trip.DriverId == user.Id;
                 viewModel.IsModerator = User.IsInRole("Moderator");
                     
+                // Checking if the user is a passenger
                 var activeBooking = await _bookingService
                     .GetUserActiveBookingAsync(id, user.Id);
                 viewModel.HasActivateBooking = activeBooking != null;
@@ -237,10 +258,12 @@ namespace Carvisto.Controllers
                 }
             }
                 
+            // Getting the route information
             var routeInfo = await _mapsService.GetRouteInfoAsync(
                     trip.StartLocation, 
                 trip.EndLocation);
                 
+            // Setting the route information in the view model
             viewModel.RouteDistance = routeInfo.Distance;
             viewModel.RouteDuration = routeInfo.Duration;
 
