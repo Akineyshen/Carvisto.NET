@@ -120,6 +120,43 @@ namespace Carvisto.Migrations
                     b.ToTable("Bookings");
                 });
 
+            modelBuilder.Entity("Carvisto.Models.DriverReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("CanDelete")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DriverId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ReviewerId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DriverId");
+
+                    b.HasIndex("ReviewerId");
+
+                    b.ToTable("DriverReviews");
+                });
+
             modelBuilder.Entity("Carvisto.Models.Trip", b =>
                 {
                     b.Property<int>("Id")
@@ -310,6 +347,25 @@ namespace Carvisto.Migrations
                     b.Navigation("Trip");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Carvisto.Models.DriverReview", b =>
+                {
+                    b.HasOne("Carvisto.Models.ApplicationUser", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Carvisto.Models.ApplicationUser", "Reviewer")
+                        .WithMany()
+                        .HasForeignKey("ReviewerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Driver");
+
+                    b.Navigation("Reviewer");
                 });
 
             modelBuilder.Entity("Carvisto.Models.Trip", b =>

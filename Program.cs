@@ -25,6 +25,7 @@ builder.Services.AddScoped<ITripService, TripService>();
 builder.Services.AddScoped<IGoogleMapsService, GoogleMapsService>();
 builder.Services.AddHttpClient<IGoogleMapsService, GoogleMapsService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 
 var app = builder.Build();
 

@@ -13,6 +13,7 @@ namespace Carvisto.Data
         
         public DbSet<Trip> Trips { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<DriverReview> DriverReviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,6 +39,18 @@ namespace Carvisto.Data
                 .WithMany()
                 .HasForeignKey(t => t.DriverId)
                 .IsRequired();
+
+            modelBuilder.Entity<DriverReview>()
+                .HasOne(r => r.Driver)
+                .WithMany()
+                .HasForeignKey(r => r.DriverId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            modelBuilder.Entity<DriverReview>()
+                .HasOne(r => r.Reviewer)
+                .WithMany()
+                .HasForeignKey(r => r.ReviewerId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
