@@ -48,7 +48,10 @@
                             {
                                 <img src="/images/profiles/default.png" alt="Profile Image" class="drivers-card-img" />
                             }
-                            <h5 class="drivers-title">@driver.ContactName</h5>
+                            <div class="rating">
+                                <h5 class="drivers-title">@driver.ContactName</h5>
+                                <p>Rating: @(((Dictionary<string, double>)ViewBag.DriverRatings)[driver.Id].ToString("F1")) ⭐️</p>
+                            </div>
                         </div>
                         <a asp-action="Details" asp-route-id="@driver.Id" class="view-button-drivers">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">

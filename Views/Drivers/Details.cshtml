@@ -127,4 +127,95 @@
             </div>
         }
     </div>
+    
+    <div class="reviews-section">
+    <div class="rating-summary">
+        <div class="section-header">
+            <h3 class="section-title">Driver reviews (@Model.ReviewsCount)</h3>
+        </div>
+        <div class="rating-stats">
+            <div class="rating-stats-item">
+                <div class="average-rating">Rating: @Model.AverageRating.ToString("F1")</div>
+                <div class="stars">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= Math.Round(Model.AverageRating))
+                        {
+                            <span class="star filled">⭐</span>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.CanLeaveReview)
+    {
+        <div class="add-review-form">
+            <h4 class="title-review">Leave a review</h4>
+            <form asp-action="AddReview" asp-controller="Drivers" asp-route-driverId="@Model.Driver.Id" method="post" class="review-form">
+                @Html.AntiForgeryToken()
+                <div class="rating-input">
+                    <div class="">Select the number of stars: </div>
+                    @for (int i = 5; i >= 1; i--)
+                    {
+                        <input type="radio" id="star@(i)" name="Rating" value="@i" class="checkmark-review" required/>
+                        <label for="star@(i)">@i⭐</label>
+                    }
+                </div>
+                <div class="form-group">
+                    <textarea name="Comment" class="form-input trip-textarea" placeholder="Write your review..." required></textarea>
+                </div>
+                <div class="action-review">
+                    <button type="submit" class="btn-add-review">Send review</button>
+                </div>
+            </form>
+        </div>
+    }
+
+    <div class="reviews-list">
+        @foreach (var review in Model.Reviews)
+        {
+            <div class="review-item">
+                <div class="review-header-item">
+                    <div class="review-header">
+                        @if (!string.IsNullOrEmpty(review.Reviewer.ProfileImagePath))
+                        {
+                            <img src="@review.Reviewer.ProfileImagePath" alt="Profile Image" class="detail-reviewer-img" onerror="this.onerror=null; this.src='/images/driver_default.png';"/>
+                        }
+                        else
+                        {
+                            <img src="/images/profiles/default.png" alt="Profile Image" class="detail-reviewer-img"/>
+                        }
+                        <div class="review-header-info">
+                            <div class="reviewer-name">@review.Reviewer.ContactName</div>
+                            <div class="review-rating">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <span class="star filled">⭐</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-date">@review.CreatedAt.ToString("dd.MM.yyyy")</div>
+                </div>
+                <div class="review-comment">
+                    @review.Comment
+                </div>
+                @if (review.CanDelete)
+                {
+                    <form asp-action="DeleteReview" asp-controller="Drivers" method="post" class="delete-review">
+                        <input type="hidden" name="reviewId" value="@review.Id"/>
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="delete-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                            </svg>
+                        </button>
+                    </form>
+                }
+            </div>
+        }
+    </div>
+</div>
 </div>

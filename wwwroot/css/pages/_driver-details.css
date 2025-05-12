@@ -91,6 +91,143 @@
     gap: 0.5rem;
 }
 
+.rating-stats {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    background-color: var(--card-bg);
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+}
+
+.rating-stats-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.average-rating
+{
+    font-weight: 600;
+    font-size: 1.4rem;
+    color: var(--text-dark);
+}
+
+.reviews-count {
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+.title-review {
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: var(--text-dark);
+}
+
+.rating-input {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.checkmark-review {
+    height: 18px;
+    width: 18px;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.add-review-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    background-color: var(--card-bg);
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+}
+
+.action-review {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.btn-add-review {
+    background-color: var(--primary-color);
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    transition: background-color 0.3s;
+}
+.reviews-list{
+    margin-top: 2rem;
+}
+
+.review-item {
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--card-bg);
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}
+
+.review-header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.review-header-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.detail-reviewer-img {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reviewer-name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+.review-comment {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-top: 1rem;
+}
+
+.delete-review {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .driver-profile {
