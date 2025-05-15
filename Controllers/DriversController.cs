@@ -65,7 +65,7 @@ namespace Carvisto.Controllers
         // GET: /Drivers/Details
         public async Task<IActionResult> Details(string? id)
         {
-            if (id != null)
+            if (id == null)
             {
                 return NotFound();
             }
