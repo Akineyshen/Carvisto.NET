@@ -32,7 +32,6 @@ namespace Carvisto.Models
         public ApplicationUser? Driver { get; set; }
         
         [Required(ErrorMessage = "The number of seats is mandatory")]
-        [Range(1, 10, ErrorMessage = "The number of seats must be between 1 and 10")]
         public int Seats { get; set; }
         
         public int AvailableSeats { get; set; }

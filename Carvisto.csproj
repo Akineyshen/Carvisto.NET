@@ -37,6 +37,9 @@
       <_ContentIncludedByDefault Remove="wwwroot\css\pages\createTrip.css" />
       <_ContentIncludedByDefault Remove="wwwroot\css\pages\faq.css" />
       <_ContentIncludedByDefault Remove="wwwroot\css\pages\home.css" />
+      <_ContentIncludedByDefault Remove="Carvisto.Tests\obj\Carvisto.Tests.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="Carvisto.Tests\obj\Debug\net9.0\Carvisto.Tests.sourcelink.json" />
+      <_ContentIncludedByDefault Remove="Carvisto.Tests\obj\project.assets.json" />
     </ItemGroup>
 
 </Project>
