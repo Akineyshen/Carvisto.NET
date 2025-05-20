@@ -55,8 +55,22 @@ app.MapControllerRoute(
 
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<CarvistoDbContext>();
-    dbContext.Database.EnsureCreated();
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    Console.WriteLine($"Using connection string: {connectionString}");
+    
+    var dataSource = connectionString?.Split(';')
+        .FirstOrDefault(s => s.StartsWith("Data Source=", StringComparison.OrdinalIgnoreCase))
+        ?.Substring("Data Source=".Length);
+
+    if (!string.IsNullOrEmpty(dataSource))
+    {
+        var dbDirectory = Path.GetDirectoryName(dataSource);
+        if (!string.IsNullOrEmpty(dbDirectory) && !Directory.Exists(dbDirectory))
+        {
+            Directory.CreateDirectory(dbDirectory);
+            Console.WriteLine($"Created directory: {dbDirectory}");
+        }
+    }
     
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();

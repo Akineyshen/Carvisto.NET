@@ -28,14 +28,11 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# Точно убеждаемся, что папки имеют правильные права
-# Ближе к концу Dockerfile в секции final
 USER root
 RUN mkdir -p /app/Data && \
-    mkdir -p /home/app/.aspnet/DataProtection-Keys && \
+    touch /app/Carvisto.db && \
     chown -R 1000:1000 /app && \
-    chmod -R 777 /app/Data && \
-    chmod -R 777 /home/app/.aspnet
+    chmod 666 /app/Carvisto.db
 
 USER $APP_UID
 
