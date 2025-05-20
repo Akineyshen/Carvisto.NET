@@ -87,9 +87,9 @@ namespace Carvisto.Tests.Services.Trip
             return trip;
         }
 
-        private async Task<Booking> CreateTestBooking(int tripId, string passenderId = null)
+        private async Task<Models.Booking> CreateTestBooking(int tripId, string passenderId = null)
         {
-            var booking = new Booking
+            var booking = new Models.Booking
             {
                 TripId = tripId,
                 UserId = passenderId ?? _testPassengerId,
@@ -366,13 +366,14 @@ namespace Carvisto.Tests.Services.Trip
             await CreateTestBooking(trip.Id, additionalPassengerId);
             
             // Create cancell booking
-            var cancelledBooking = new Booking
+            var cancelledBooking = new Models.Booking
             {
                 TripId = trip.Id,
                 UserId = "cancelled-passenger-1",
                 BookingDate = DateTime.Now,
                 IsCancelled = true,
             };
+            
             _context.Bookings.Add(cancelledBooking);
             await _context.SaveChangesAsync();
             
