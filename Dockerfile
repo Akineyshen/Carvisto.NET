@@ -30,8 +30,10 @@ COPY --from=publish /app/publish .
 
 USER root
 RUN mkdir -p /app/Data && \
+    touch /app/Data/carvisto.db && \
     chown -R 1000:1000 /app/Data && \
-    chmod -R 777 /app/Data
+    chmod -R 777 /app/Data && \
+    chmod 666 /app/Data/carvisto.db
 
 USER $APP_UID
 
