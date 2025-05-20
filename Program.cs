@@ -103,20 +103,31 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<CarvistoDbContext>();
     try
     {
-        // Создаем схему базы данных
-        dbContext.Database.EnsureCreated();
-        Console.WriteLine("База данных и таблицы созданы успешно");
+        if (!File.Exists(dataSource))
+        {
+            Console.WriteLine("База данных не существует, создаём новую");
+            dbContext.Database.EnsureCreated();
+            Console.WriteLine("База данных создана успешно");
+        }
+        else
+        {
+            Console.WriteLine("Подключение к существующей базе данных");
+            if (!dbContext.Database.CanConnect())
+            {
+                Console.WriteLine("Не удалось подключиться к существующей БД");
+                throw new Exception("Ошибка подключения к существующей базе данных");
+            }
+        }
     }
     catch (Exception ex)
     {
         Console.WriteLine($"Ошибка при создании базы данных: {ex.Message}");
-        // Проверяем тип исключения для более точной диагностики
         if (ex is Microsoft.Data.Sqlite.SqliteException sqlEx)
         {
             Console.WriteLine($"SQLite error code: {sqlEx.SqliteErrorCode}");
             Console.WriteLine($"SQLite extended error code: {sqlEx.SqliteExtendedErrorCode}");
         }
-        throw; // Важно пробросить исключение дальше
+        throw;
     }
     
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();

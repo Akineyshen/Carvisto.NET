@@ -32,8 +32,7 @@ VOLUME /app/Data
 VOLUME /home/app/.aspnet/DataProtection-Keys
 
 USER root
-RUN mkdir -p /app/Data && \
-    mkdir -p /home/app/.aspnet/DataProtection-Keys && \
+RUN mkdir -p /home/app/.aspnet/DataProtection-Keys && \
     touch /app/Data/carvisto.db && \
     chown -R 1000:1000 /app && \
     chmod -R 777 /app/Data && \
