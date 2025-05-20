@@ -100,6 +100,25 @@ using (var scope = app.Services.CreateScope())
         }
     }
     
+    var dbContext = scope.ServiceProvider.GetRequiredService<CarvistoDbContext>();
+    try
+    {
+        // Создаем схему базы данных
+        dbContext.Database.EnsureCreated();
+        Console.WriteLine("База данных и таблицы созданы успешно");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Ошибка при создании базы данных: {ex.Message}");
+        // Проверяем тип исключения для более точной диагностики
+        if (ex is Microsoft.Data.Sqlite.SqliteException sqlEx)
+        {
+            Console.WriteLine($"SQLite error code: {sqlEx.SqliteErrorCode}");
+            Console.WriteLine($"SQLite extended error code: {sqlEx.SqliteExtendedErrorCode}");
+        }
+        throw; // Важно пробросить исключение дальше
+    }
+    
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
