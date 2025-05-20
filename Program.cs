@@ -60,21 +60,45 @@ using (var scope = app.Services.CreateScope())
     
     var dataSource = connectionString?.Split(';')
         .FirstOrDefault(s => s.StartsWith("Data Source=", StringComparison.OrdinalIgnoreCase))
-        ?.Substring("Data Source=".Length);
+        ?.Substring("Data Source=".Length).Trim();
+
+    Console.WriteLine($"Database path: {dataSource}");
 
     if (!string.IsNullOrEmpty(dataSource))
     {
         var dbDirectory = Path.GetDirectoryName(dataSource);
-        if (!string.IsNullOrEmpty(dbDirectory) && !Directory.Exists(dbDirectory))
+        Console.WriteLine($"Database directory: {dbDirectory}");
+    
+        if (!string.IsNullOrEmpty(dbDirectory))
         {
-            Directory.CreateDirectory(dbDirectory);
-            Console.WriteLine($"Created directory: {dbDirectory}");
+            if (!Directory.Exists(dbDirectory))
+            {
+                Directory.CreateDirectory(dbDirectory);
+                Console.WriteLine($"Created directory: {dbDirectory}");
+            }
+            else
+            {
+                Console.WriteLine($"Directory exists: {dbDirectory}");
+                Console.WriteLine($"Directory writable: {IsDirectoryWritable(dbDirectory)}");
+            }
         }
     }
     
-    var dbContext = scope.ServiceProvider.GetRequiredService<CarvistoDbContext>();
-    dbContext.Database.EnsureCreated();
-    Console.WriteLine("Database schema created");
+    static bool IsDirectoryWritable(string dirPath)
+    {
+        try
+        {
+            using var fs = File.Create(
+                Path.Combine(dirPath, Path.GetRandomFileName()), 
+                1, 
+                FileOptions.DeleteOnClose);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
     
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();

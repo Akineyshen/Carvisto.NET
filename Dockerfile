@@ -28,16 +28,18 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-USER root
-RUN mkdir -p /app/Data && \
-    touch /app/Data/carvisto.db && \
-    chown -R 1000:1000 /app/Data && \
-    chmod -R 777 /app/Data && \
-    chmod 666 /app/Data/carvisto.db
-
-USER $APP_UID
-
-USER $APP_UID
 VOLUME /app/Data
 VOLUME /home/app/.aspnet/DataProtection-Keys
+
+USER root
+RUN mkdir -p /app/Data && \
+    mkdir -p /home/app/.aspnet/DataProtection-Keys && \
+    touch /app/Data/carvisto.db && \
+    chown -R 1000:1000 /app && \
+    chmod -R 777 /app/Data && \
+    chmod 666 /app/Data/carvisto.db && \
+    chmod -R 777 /home/app/.aspnet/DataProtection-Keys
+
+USER 1000
+
 ENTRYPOINT ["dotnet", "Carvisto.dll"]
