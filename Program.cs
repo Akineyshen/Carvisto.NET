@@ -72,6 +72,10 @@ using (var scope = app.Services.CreateScope())
         }
     }
     
+    var dbContext = scope.ServiceProvider.GetRequiredService<CarvistoDbContext>();
+    dbContext.Database.EnsureCreated();
+    Console.WriteLine("Database schema created");
+    
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
