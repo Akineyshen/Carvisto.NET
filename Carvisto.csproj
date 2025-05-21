@@ -8,10 +8,15 @@
 
     <ItemGroup>
         <PackageReference Include="DinkToPdf" Version="1.0.8" />
+        <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
+        <PackageReference Include="System.Text.Encoding.Extensions" Version="4.3.0" />
+        <PackageReference Include="Microsoft.Win32.Primitives" Version="4.3.0" />
+        <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
+        <PackageReference Include="System.Net.Primitives" Version="4.3.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-preview.2.24128.4" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0-preview.2.24128.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
         <PackageReference Include="Moq" Version="4.20.72" />
         <PackageReference Include="NUnit" Version="4.3.2" />
@@ -40,6 +45,21 @@
       <_ContentIncludedByDefault Remove="Carvisto.Tests\obj\Carvisto.Tests.csproj.nuget.dgspec.json" />
       <_ContentIncludedByDefault Remove="Carvisto.Tests\obj\Debug\net9.0\Carvisto.Tests.sourcelink.json" />
       <_ContentIncludedByDefault Remove="Carvisto.Tests\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="publish\alpine\x64\Cov_x64.config" />
+      <_ContentIncludedByDefault Remove="publish\CodeCoverage\amd64\Cov_x64.config" />
+      <_ContentIncludedByDefault Remove="publish\CodeCoverage\arm64\Cov_arm64.config" />
+      <_ContentIncludedByDefault Remove="publish\CodeCoverage\CodeCoverage.config" />
+      <_ContentIncludedByDefault Remove="publish\CodeCoverage\Cov_x86.config" />
+      <_ContentIncludedByDefault Remove="publish\macos\x64\Cov_x64.config" />
+      <_ContentIncludedByDefault Remove="publish\ubuntu\x64\Cov_x64.config" />
+      <_ContentIncludedByDefault Remove="publish\web.config" />
+      <_ContentIncludedByDefault Remove="publish\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="publish\appsettings.json" />
+      <_ContentIncludedByDefault Remove="publish\appsettings.Production.json" />
+      <_ContentIncludedByDefault Remove="publish\Carvisto.deps.json" />
+      <_ContentIncludedByDefault Remove="publish\Carvisto.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="publish\Carvisto.staticwebassets.endpoints.json" />
+      <_ContentIncludedByDefault Remove="publish\vercel.json" />
     </ItemGroup>
 
 </Project>
