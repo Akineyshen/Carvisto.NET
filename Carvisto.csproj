@@ -61,6 +61,19 @@
       <_ContentIncludedByDefault Remove="publish\Carvisto.runtimeconfig.json" />
       <_ContentIncludedByDefault Remove="publish\Carvisto.staticwebassets.endpoints.json" />
       <_ContentIncludedByDefault Remove="publish\vercel.json" />
+      <_ContentIncludedByDefault Remove="publish\publish\alpine\x64\Cov_x64.config" />
+      <_ContentIncludedByDefault Remove="publish\publish\CodeCoverage\amd64\Cov_x64.config" />
+      <_ContentIncludedByDefault Remove="publish\publish\CodeCoverage\arm64\Cov_arm64.config" />
+      <_ContentIncludedByDefault Remove="publish\publish\CodeCoverage\CodeCoverage.config" />
+      <_ContentIncludedByDefault Remove="publish\publish\CodeCoverage\Cov_x86.config" />
+      <_ContentIncludedByDefault Remove="publish\publish\macos\x64\Cov_x64.config" />
+      <_ContentIncludedByDefault Remove="publish\publish\ubuntu\x64\Cov_x64.config" />
+      <_ContentIncludedByDefault Remove="publish\publish\web.config" />
+      <_ContentIncludedByDefault Remove="publish\publish\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="publish\publish\appsettings.json" />
+      <_ContentIncludedByDefault Remove="publish\publish\Carvisto.deps.json" />
+      <_ContentIncludedByDefault Remove="publish\publish\Carvisto.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="publish\publish\Carvisto.staticwebassets.endpoints.json" />
     </ItemGroup>
 
 </Project>
