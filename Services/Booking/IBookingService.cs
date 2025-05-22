@@ -1,6 +1,4 @@
 using Carvisto.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Carvisto.Models.ViewModels;
 
 namespace Carvisto.Services
