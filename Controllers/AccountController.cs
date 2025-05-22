@@ -120,46 +120,46 @@ namespace Carvisto.Controllers
             {
                 // Basic field validation
                 var currentUser = await _accountService.GetCurrentUserAsync();
-                {
-                    // Check if the email is already in use
-                    string? originalEmail = currentUser.Email;
-                    bool emailChanged = !string.Equals(originalEmail, user.Email, StringComparison.OrdinalIgnoreCase);
+                
+                currentUser.ContactName = user.ContactName;
+                currentUser.ContactPhone = user.ContactPhone;
+                
+                // Check if the email is already in use
+                string? originalEmail = currentUser.Email;
+                bool emailChanged = !string.Equals(originalEmail, user.Email, StringComparison.OrdinalIgnoreCase);
 
-                    // Email change validation
-                    if (emailChanged)
+                // Email change validation
+                if (emailChanged)
+                {
+                    if (user.Email != null)
                     {
-                        if (user.Email != null)
+                        var existingUser = await _accountService.GetUserByEmailAsync(user.Email);
+                        if (existingUser.Id != currentUser.Id)
                         {
-                            var existingUser = await _accountService.GetUserByEmailAsync(user.Email);
-                            if (existingUser.Id != currentUser.Id)
-                            {
-                                TempData["ProfileUpdateError"] = "Email is already in use.";
-                                return RedirectToAction("Index", "Account");
-                            }
+                            TempData["ProfileUpdateError"] = "Email is already in use.";
+                            return RedirectToAction("Index", "Account");
                         }
-                        
-                        // Apply profile updates
-                        currentUser.ContactName = user.ContactName;
-                        currentUser.ContactPhone = user.ContactPhone;
-                        currentUser.Email = user.Email;
-                        currentUser.UserName = user.Email;
                     }
-                    // Update user profile
-                    var result = await _accountService.UpdateUserAsync(currentUser);
+                        
+                    // Apply profile updates
+                    currentUser.Email = user.Email;
+                    currentUser.UserName = user.Email;
+                }
+                
+                // Update user profile
+                var result = await _accountService.UpdateUserAsync(currentUser);
                     
-                    // Check if the update was successful
-                    if (result.Succeeded)
-                    {
-                        TempData["ProfileUpdateSuccess"] = "Information successfully updated.";
-                        
-                        return RedirectToAction("Index", "Account");
-                    }
-                    else
-                    {
-                        var errorMessages = string.Join("<br>", result.Errors.Select(e => e.Description));
-                        TempData["ProfileUpdateError"] = errorMessages;
-                        return RedirectToAction("Index", "Account");
-                    }
+                // Check if the update was successful
+                if (result.Succeeded)
+                {
+                    TempData["ProfileUpdateSuccess"] = "Information successfully updated.";
+                    return RedirectToAction("Index", "Account");
+                }
+                else
+                {
+                    var errorMessages = string.Join("<br>", result.Errors.Select(e => e.Description));
+                    TempData["ProfileUpdateError"] = errorMessages;
+                    return RedirectToAction("Index", "Account");
                 }
             }
             else
