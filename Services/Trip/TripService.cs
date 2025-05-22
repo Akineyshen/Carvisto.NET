@@ -40,21 +40,57 @@ namespace Carvisto.Services
             await _context.SaveChangesAsync();
         }
 
-        // Update existing trip
+        // Update trip
         public async Task UpdateTripAsync(Trip trip)
         {
             var existingTrip = await _context.Trips
-                .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Id == trip.Id);
-            
-            if (existingTrip.Seats != trip.Seats)
+
+            if (existingTrip == null)
             {
-                int bookedSeats = existingTrip.Seats - existingTrip.AvailableSeats;
-                trip.AvailableSeats = Math.Max(0, trip.Seats - bookedSeats);
+                throw new InvalidOperationException("Trip not found");
             }
             
-            _context.Update(trip);
-            await _context.SaveChangesAsync();
+            var activeBookings = await _context.Bookings
+                .Where(b => b.TripId == trip.Id && !b.IsCancelled)
+                .OrderByDescending(b => b.BookingDate)
+                .ToListAsync();
+            
+            int bookedSeats = activeBookings.Count;
+            
+            int oldSeats = existingTrip.Seats;
+            
+            _context.Entry(existingTrip).CurrentValues.SetValues(trip);
+
+            if (trip.Seats < bookedSeats)
+            {
+                int bookingsToCancel = bookedSeats - trip.Seats;
+                
+                for (int i = 0; i < bookingsToCancel && i < activeBookings.Count; i++)
+                {
+                    activeBookings[i].IsCancelled = true;
+                }
+
+                existingTrip.AvailableSeats = 0;
+            }
+            else
+            {
+                existingTrip.AvailableSeats = trip.Seats - bookedSeats;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await _context.Trips.AnyAsync(t => t.Id == trip.Id))
+                {
+                    throw new InvalidOperationException("Trip not found");
+                }
+
+                throw;
+            }
         }
 
         // Delete trip by ID
